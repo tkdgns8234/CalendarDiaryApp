@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CalendarDiaryApp</string>
+    <string name="title_my_photo_diary">My photo diary</string>
+    <string name="title_register_new_diary">Register new diary</string>
+    <string name="title_settings">Settings</string>
+    <string name="btn_register_diary">Register diary</string>
+    <string name="language">Language</string>
+    <string name="korean">Korean</string>
+    <string name="english">English</string>
+    <string name="title">Title</string>
+    <string name="content">Content</string>
+    <string name="save">Save</string>
+    <string name="correct">Correct</string>
+    <string name="delete">Delete</string>
+
+</resources>

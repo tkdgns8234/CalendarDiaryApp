@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.diary.DiaryActivity">
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/gallery_default_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="iv_gallery,tv_gallery"/>
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/blue_primary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/menu_toolbar_diary"
+        app:title="@string/title_register_new_diary"
+        app:titleTextAppearance="@style/toolbar_title_text"
+        app:titleTextColor="@color/white" />
+
+    <TextView
+        android:id="@+id/tv_current_date"
+        style="@style/font_bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        tools:text="2022년 9월 15일 목요일" />
+
+    <View
+        android:id="@+id/outline"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="7dp"
+        android:background="@color/blue_white"
+        app:layout_constraintTop_toBottomOf="@id/tv_current_date" />
+
+    <EditText
+        android:id="@+id/et_title"
+        style="@style/font_bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:background="@null"
+        android:ellipsize="end"
+        android:hint="@string/title"
+        android:inputType="text"
+        android:maxLines="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/outline"
+        tools:text="귀여운 진주" />
+
+    <View
+        android:id="@+id/outline2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="7dp"
+        android:background="@color/blue_white"
+        app:layout_constraintTop_toBottomOf="@id/et_title" />
+
+    <ImageView
+        android:id="@+id/iv_diary"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/gray_light"
+        app:layout_constraintDimensionRatio="2:0.8"
+        app:layout_constraintTop_toBottomOf="@id/outline2" />
+
+    <ImageView
+        android:id="@+id/iv_gallery"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_baseline_gallery_24"
+        app:layout_constraintBottom_toBottomOf="@id/iv_diary"
+        app:layout_constraintEnd_toEndOf="@id/iv_diary"
+        app:layout_constraintStart_toStartOf="@id/iv_diary"
+        app:layout_constraintTop_toTopOf="@id/iv_diary"
+        app:layout_constraintVertical_bias="0.4" />
+
+    <TextView
+        android:id="@+id/tv_gallery"
+        style="@style/font_bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:text="사진을 선택해주세요"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_gallery" />
+
+    <EditText
+        android:id="@+id/et_content"
+        style="@style/font_bold"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="15dp"
+        android:background="@null"
+        android:ellipsize="start"
+        android:gravity="start|top"
+        android:hint="@string/content"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@id/btn_save_and_modify"
+        app:layout_constraintTop_toBottomOf="@id/iv_diary" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_save_and_modify"
+        style="@style/font_bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/green"
+        android:text="@string/save"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
