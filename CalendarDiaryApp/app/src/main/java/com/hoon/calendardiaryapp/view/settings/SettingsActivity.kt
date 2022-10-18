@@ -1,16 +1,24 @@
 package com.hoon.calendardiaryapp.view.settings
 
-import android.os.Bundle
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
+import com.hoon.calendardiaryapp.BaseActivity
+import com.hoon.calendardiaryapp.BaseViewModel
+import com.hoon.calendardiaryapp.R
 import com.hoon.calendardiaryapp.databinding.ActivitySettingsBinding
+import com.hoon.calendardiaryapp.util.LocaleHelper
+import com.hoon.calendardiaryapp.util.PreferenceManager
+import com.hoon.calendardiaryapp.view.main.MainViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
-class SettingsActivity : AppCompatActivity() {
-    val binding = ActivitySettingsBinding.inflate(layoutInflater)
+class SettingsActivity : BaseActivity<MainViewModel, ActivitySettingsBinding>() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+    override val viewModel by viewModel<MainViewModel>()
 
+    override fun getViewBinding() = ActivitySettingsBinding.inflate(layoutInflater)
+
+    override fun observeData() {
         initViews()
     }
 
@@ -19,8 +27,49 @@ class SettingsActivity : AppCompatActivity() {
             finish()
         }
 
-        /* TODO: radio group 처리 추가, default value:디바이스 설정을 따라감
-         * 설정 값은 저장되어야하고 즉시 번역되어야함 (sharedPref 등에 저장하자)
-         */
+        radioGroupLanguage.setOnCheckedChangeListener { group, checkedId ->
+            when (checkedId) {
+                R.id.radio_btn_korean -> {
+                    updateLocaleInfo(LocaleHelper.LANGUAGE_KOREAN)
+                }
+                R.id.radio_btn_english -> {
+                    updateLocaleInfo(LocaleHelper.LANGUAGE_ENGLISH)
+                }
+            }
+        }
+    }
+
+    private fun updateLocaleInfo(language: String) {
+        val currentLocale = LocaleHelper.getPersistedLocale(this)
+
+        if (language != currentLocale) {
+
+            LocaleHelper.setLocale(this@SettingsActivity, language) {
+                PreferenceManager(this).putCurrentLanguage(it)
+            }
+            recreate() // necessary here because this Activity is currently running and thus a recreate() in onResume() would be too late
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val test = LocaleHelper.getPersistedLocale(this)
+
+        when (test) {
+            LocaleHelper.LANGUAGE_KOREAN -> {
+                binding.radioGroupLanguage.check(R.id.radio_btn_korean)
+            }
+            // 한국어 외의 다른 system language 는 english 로 설정
+            else -> {
+                binding.radioGroupLanguage.check(R.id.radio_btn_english)
+            }
+        }
+    }
+
+    companion object {
+        const val TAG = "SettingsActivity"
+
+        fun newIntent(context: Context) =
+            Intent(context, SettingsActivity::class.java)
     }
 }
