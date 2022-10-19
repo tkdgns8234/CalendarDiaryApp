@@ -5,9 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [YearEntity::class, DayEntity::class], version = 1)
+@Database(entities = [YearEntity::class, DayEntity::class, DiaryEntity::class], version = 1)
 abstract class DiaryAppDatabase : RoomDatabase() {
     abstract fun holidayDao(): HolidayDao
+    abstract fun diaryDao(): DiaryDao
 
     companion object {
         const val DB_NAME = "DiaryAppDatabase"

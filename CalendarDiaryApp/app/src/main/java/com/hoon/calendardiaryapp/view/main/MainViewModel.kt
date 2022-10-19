@@ -7,6 +7,7 @@ import com.hoon.calendardiaryapp.BaseViewModel
 import com.hoon.calendardiaryapp.data.repository.DatabaseRepository
 import com.hoon.calendardiaryapp.data.repository.HolidayApiRepository
 import kotlinx.coroutines.launch
+import java.util.*
 
 class MainViewModel(
     private val holidayApiRepository: HolidayApiRepository,
@@ -16,6 +17,9 @@ class MainViewModel(
     private val _mainStateLiveData = MutableLiveData<MainState>(MainState.UnInitialized)
     val mainStateLiveData: LiveData<MainState> get() = _mainStateLiveData
 
+    /**
+     * @param year : string format "yyyy"
+     */
     fun getHolidaysFromYear(year: String) = viewModelScope.launch {
         setState(MainState.Loading.Start)
         // db에 holiday 정보가 저장되어있는지 확인
@@ -36,6 +40,10 @@ class MainViewModel(
             setState(MainState.Success.GetHolidaysFromYear(holidays))
         }
         setState(MainState.Loading.End)
+    }
+
+    fun updateDiaryTitleAndImage(date: Date) = viewModelScope.launch {
+        databaseRepository.getDiaryContents(date)
     }
 
     private fun setState(state: MainState) {

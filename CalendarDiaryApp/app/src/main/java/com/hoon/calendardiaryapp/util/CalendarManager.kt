@@ -1,5 +1,6 @@
 package com.hoon.calendardiaryapp.util
 
+import android.util.Log
 import java.util.*
 
 class CalendarManager {
@@ -32,6 +33,15 @@ class CalendarManager {
         } else {
             calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1)
         }
+        makeDays(refreshCallback)
+    }
+
+    fun moveToTargetDate(year: Int, month: Int, refreshCallback: (Calendar) -> Unit) {
+        val isValidRange = month in (1..12)
+        if (isValidRange.not()) return
+
+        calendar.set(Calendar.YEAR, year)
+        calendar.set(Calendar.MONTH, month - 1) // 1월 = 0
         makeDays(refreshCallback)
     }
 

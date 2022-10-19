@@ -8,7 +8,4 @@ fun Date.getMonthString() = DateFormat.format("MM", this).toString()
 
 fun Date.getDayString() = DateFormat.format("dd", this).toString()
 
-fun Date.formatString(): String {
-    val format = SimpleDateFormat("yyyy-MM-dd")
-    return format.format(this)
-}
+fun Date.getYearString() = DateFormat.format("yyyy", this).toString()

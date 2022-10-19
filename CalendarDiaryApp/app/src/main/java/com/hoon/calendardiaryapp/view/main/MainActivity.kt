@@ -1,5 +1,6 @@
 package com.hoon.calendardiaryapp.view.main
 
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -10,6 +11,7 @@ import com.hoon.calendardiaryapp.data.model.HolidayModel
 import com.hoon.calendardiaryapp.databinding.ActivityMainBinding
 import com.hoon.calendardiaryapp.extensions.toast
 import com.hoon.calendardiaryapp.util.CalendarManager
+import com.hoon.calendardiaryapp.util.DateUtil
 import com.hoon.calendardiaryapp.view.adapter.CalenderAdapter
 import com.hoon.calendardiaryapp.view.settings.SettingsActivity
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -48,7 +50,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
     private fun initViews() = with(binding) {
         setSupportActionBar(toolbar)
 
-        adapter = CalenderAdapter { calendar -> updateCalender(calendar) }
+        adapter = CalenderAdapter(onClickListener, updateUIListener)
         rvCalender.layoutManager =
             GridLayoutManager(this@MainActivity, CalendarManager.DAYS_OF_WEEK)
         rvCalender.adapter = adapter
@@ -77,20 +79,33 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         toast(message)
     }
 
-    private fun updateCalender(calendar: Calendar) = with(binding) {
-        val sdfYear = SimpleDateFormat("yyyy", Locale.KOREAN)
-        val sdfMonth = SimpleDateFormat("MM", Locale.KOREAN)
-        val year = sdfYear.format(calendar.time)
-        val month = sdfMonth.format(calendar.time)
+    private val updateUIListener: (Calendar) -> Unit = { calendar ->
+        with(binding) {
+            val sdfYear = SimpleDateFormat("yyyy")
+            val sdfMonth = SimpleDateFormat("MM")
+            val year = sdfYear.format(calendar.time)
+            val month = sdfMonth.format(calendar.time)
 
-        if (currentYear != year) {
-            currentYear = year
-            // 해가 바뀌는 경우 holiday list update
-            viewModel.getHolidaysFromYear(year)
+            tvYear.text = year
+            tvMonth.text = month
+
+            if (currentYear != year) {
+                currentYear = year
+                // 해가 바뀌는 경우 holiday list update
+                viewModel.getHolidaysFromYear(year)
+            }
         }
+    }
 
-        tvYear.text = year
-        tvMonth.text = month
+    private val onClickListener: (date: Date) -> Unit = { date ->
+        with(binding) {
+            val pattern = resources.getString(R.string.dateViewFormat)
+            val dateString = DateUtil.formatDate(date, pattern)
+
+            tvSelectedDate.text = dateString
+
+            // TODO db에 현재 날짜에대한 데이터가 있으면 diaryView update
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -102,6 +117,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
         return when (item?.itemId) {
             R.id.menu_current_date -> {
+                adapter.updateSelectedDate()
                 true
             }
             R.id.menu_settings -> {

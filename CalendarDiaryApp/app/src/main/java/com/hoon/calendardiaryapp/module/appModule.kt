@@ -13,7 +13,7 @@ val appModule = module {
     single { Dispatchers.IO }
 
     single<HolidayApiRepository> { HolidayApiRepositoryImpl(get(), get()) }
-    single<DatabaseRepository> { DatabaseRepositoryImpl(get(), get()) }
+    single<DatabaseRepository> { DatabaseRepositoryImpl(get(), get(), get()) }
 
     viewModel { MainViewModel(get(), get()) }
 }

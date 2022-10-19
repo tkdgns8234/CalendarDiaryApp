@@ -2,7 +2,11 @@ package com.hoon.calendardiaryapp.extensions
 
 import com.hoon.calendardiaryapp.data.api.response.HolidayResponseItem
 import com.hoon.calendardiaryapp.data.database.DayEntity
+import com.hoon.calendardiaryapp.data.database.DiaryEntity
+import com.hoon.calendardiaryapp.data.model.DiaryModel
 import com.hoon.calendardiaryapp.data.model.HolidayModel
+import com.hoon.calendardiaryapp.util.Constants.DB_DIARY_ENTITY_PK_PATTERN
+import com.hoon.calendardiaryapp.util.DateUtil
 
 fun HolidayResponseItem.toModel(): HolidayModel {
     return HolidayModel(date = this.date)
@@ -20,4 +24,22 @@ fun HolidayModel.toEntity(year: String): DayEntity {
     )
 }
 
-fun List<HolidayModel>.toEntity(year: String): List<DayEntity> = map { it.toEntity(year) }
+fun DiaryEntity.toModel(): DiaryModel {
+    return DiaryModel(
+        DateUtil.parseDate(this.date, DB_DIARY_ENTITY_PK_PATTERN),
+        this.title,
+        this.imageUri,
+        this.contents
+    )
+}
+
+fun DiaryModel.toEntity(): DiaryEntity {
+    return DiaryEntity(
+        DateUtil.formatDate(this.date, DB_DIARY_ENTITY_PK_PATTERN),
+        this.title,
+        this.imageUri,
+        this.contents
+    )
+}
+
+//fun List<HolidayModel>.toEntity(year: String): List<DayEntity> = map { it.toEntity(year) }

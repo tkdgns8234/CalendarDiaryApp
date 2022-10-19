@@ -20,4 +20,5 @@
     <string name="friday">금</string>
     <string name="saturday">토</string>
     <string name="sunday">일</string>
+    <string name="dateViewFormat">yyyy년 MM월 dd일 EE요일</string>
 </resources>

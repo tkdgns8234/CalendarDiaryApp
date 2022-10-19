@@ -5,15 +5,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hoon.calendardiaryapp.R
 import com.hoon.calendardiaryapp.databinding.ItemCalenderBinding
-import com.hoon.calendardiaryapp.extensions.formatString
 import com.hoon.calendardiaryapp.extensions.getDayString
 import com.hoon.calendardiaryapp.extensions.getMonthString
+import com.hoon.calendardiaryapp.extensions.getYearString
 import com.hoon.calendardiaryapp.extensions.setColor
 import com.hoon.calendardiaryapp.util.CalendarManager
+import com.hoon.calendardiaryapp.util.DateUtil
 import java.util.*
 
 class CalenderAdapter(
-    private val updateCurrentMonth: (Calendar) -> Unit
+    private val onClickListener: (Date) -> Unit,
+    private val updateUIListener: (Calendar) -> Unit
 ) : RecyclerView.Adapter<CalenderAdapter.ViewHolder>() {
 
     private val calendarManager = CalendarManager()
@@ -40,12 +42,14 @@ class CalenderAdapter(
         if (calendarMonth == currentViewHolderMonth) {
             // 현재 표시되는 viewHolder 의 날짜가 이번 월인 경우 clickable
             holder.itemView.setOnClickListener {
-                // 클릭한 날짜 회색배경 처리
-                selectedDate = calendarManager.days[position].formatString()
+                val date = calendarManager.days[position]
+                onClickListener(date)
+
+                selectedDate = DateUtil.formatDate(date, HOLIDAY_STRING_PATTERN) // 클릭한 날짜 회색배경 처리
                 refreshView(calendarManager.calendar)
             }
-        }else {
-            // 간혹 리스너가 제거되지 않는 경우가 있어 처리
+        } else {
+            // 간혹 기존 리스너가 제거되지 않는 경우가 있어 처리
             holder.itemView.setOnClickListener { null }
         }
     }
@@ -56,14 +60,12 @@ class CalenderAdapter(
         calendarManager.changeToPrevMonth {
             refreshView(it)
         }
-        selectedDate = null
     }
 
     fun nextMonth() {
         calendarManager.changeToNextMonth {
             refreshView(it)
         }
-        selectedDate = null
     }
 
     fun updateHolidays(holidays: List<String>) {
@@ -77,7 +79,20 @@ class CalenderAdapter(
      */
     private fun refreshView(calendar: Calendar) {
         notifyDataSetChanged()
-        updateCurrentMonth(calendar)
+        updateUIListener(calendar)
+    }
+
+    fun updateSelectedDate() {
+        val now = Date(System.currentTimeMillis())
+        selectedDate = DateUtil.formatDate(now, HOLIDAY_STRING_PATTERN)
+
+        val year = now.getYearString().toInt()
+        val month = now.getMonthString().toInt()
+        calendarManager.moveToTargetDate(year, month) {
+            refreshView(it)
+        }
+
+        onClickListener(now) // call activity click listener
     }
 
     inner class ViewHolder(
@@ -86,13 +101,16 @@ class CalenderAdapter(
 
         fun bind(position: Int) = with(binding) {
             val currentViewHolderDate: Date = calendarManager.days[position]
+            val currentViewHolderDateString =
+                DateUtil.formatDate(currentViewHolderDate, HOLIDAY_STRING_PATTERN)
 
             val currentViewHolderMonth = currentViewHolderDate.getMonthString().toInt()
             val calendarMonth = calendarManager.calendar.get(Calendar.MONTH) + 1 // 1월 = 0
 
             val isSunday = position % CalendarManager.DAYS_OF_WEEK == 0
             val isSaturday = position % CalendarManager.DAYS_OF_WEEK == 6
-            val isHoliday = holidays != null && holidays!!.contains(currentViewHolderDate.formatString())
+            val isHoliday =
+                holidays != null && holidays!!.contains(currentViewHolderDateString)
 
             if (currentViewHolderMonth != calendarMonth) {  // 이전,다음 월 날짜인 경우
                 tvDay.setColor(root.context, R.color.calender_date_gray)
@@ -110,7 +128,7 @@ class CalenderAdapter(
                 tvDay.alpha = 0.35F // 이전,다음 월 날짜인 경우
             }
 
-            if (currentViewHolderDate.formatString() == selectedDate) {
+            if (currentViewHolderDateString == selectedDate) {
                 // 현재 클릭한 날짜 회색배경 처리
                 ivSelectedEffect.alpha = 0F
                 ivSelectedEffect.animate().alpha(1F).duration = 150
@@ -120,5 +138,9 @@ class CalenderAdapter(
 
             tvDay.text = currentViewHolderDate.getDayString()
         }
+    }
+
+    companion object {
+        const val HOLIDAY_STRING_PATTERN = "yyyy-MM-dd"
     }
 }
