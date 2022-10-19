@@ -1,12 +1,14 @@
 package com.hoon.calendardiaryapp.view.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hoon.calendardiaryapp.R
 import com.hoon.calendardiaryapp.databinding.ItemCalenderBinding
-import com.hoon.calendardiaryapp.extensions.*
+import com.hoon.calendardiaryapp.extensions.formatString
+import com.hoon.calendardiaryapp.extensions.getDayString
+import com.hoon.calendardiaryapp.extensions.getMonthString
+import com.hoon.calendardiaryapp.extensions.setColor
 import com.hoon.calendardiaryapp.util.CalendarManager
 import java.util.*
 
@@ -31,6 +33,21 @@ class CalenderAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position)
+
+        val calendarMonth = calendarManager.calendar.get(Calendar.MONTH) + 1 // 1월 = 0
+        val currentViewHolderMonth = calendarManager.days[position].getMonthString().toInt()
+
+        if (calendarMonth == currentViewHolderMonth) {
+            // 현재 표시되는 viewHolder 의 날짜가 이번 월인 경우 clickable
+            holder.itemView.setOnClickListener {
+                // 클릭한 날짜 회색배경 처리
+                selectedDate = calendarManager.days[position].formatString()
+                refreshView(calendarManager.calendar)
+            }
+        }else {
+            // 간혹 리스너가 제거되지 않는 경우가 있어 처리
+            holder.itemView.setOnClickListener { null }
+        }
     }
 
     override fun getItemCount() = calendarManager.days.count()
@@ -102,14 +119,6 @@ class CalenderAdapter(
             }
 
             tvDay.text = currentViewHolderDate.getDayString()
-
-            if (currentViewHolderMonth == calendarMonth) {
-                root.setOnClickListener {
-                    // 현재 클릭한 날짜 회색배경 처리
-                    selectedDate = currentViewHolderDate.formatString()
-                    refreshView(calendarManager.calendar)
-                }
-            }
         }
     }
 }
