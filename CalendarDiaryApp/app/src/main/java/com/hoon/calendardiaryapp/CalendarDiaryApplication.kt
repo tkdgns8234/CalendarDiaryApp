@@ -1,7 +1,9 @@
 package com.hoon.calendardiaryapp
 
 import android.app.Application
+import com.hoon.calendardiaryapp.module.DatabaseModule
 import com.hoon.calendardiaryapp.module.appModule
+import com.hoon.calendardiaryapp.module.retrofitModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -17,7 +19,7 @@ class CalendarDiaryApplication : Application() {
                 androidLogger(Level.NONE)
             }
             androidContext(this@CalendarDiaryApplication) // context 등록
-            modules(appModule)
+            modules(appModule + retrofitModule + DatabaseModule)
         }
     }
 }

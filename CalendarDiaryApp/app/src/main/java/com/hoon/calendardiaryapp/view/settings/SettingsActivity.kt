@@ -12,9 +12,10 @@ import com.hoon.calendardiaryapp.util.PreferenceManager
 import com.hoon.calendardiaryapp.view.main.MainViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class SettingsActivity : BaseActivity<MainViewModel, ActivitySettingsBinding>() {
+class SettingsActivity : BaseActivity<BaseViewModel, ActivitySettingsBinding>() {
 
-    override val viewModel by viewModel<MainViewModel>()
+    // this activity not used Viewmodel yet. (set BaseViewModel)
+    override val viewModel by viewModel<BaseViewModel>()
 
     override fun getViewBinding() = ActivitySettingsBinding.inflate(layoutInflater)
 

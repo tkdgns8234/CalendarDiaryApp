@@ -18,4 +18,11 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+    <style name="calender_text">
+        <item name="fontFamily">@font/ef_diary_font</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>

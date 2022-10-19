@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -48,6 +49,16 @@ dependencies {
     implementation "org.koin:koin-android-viewmodel:2.1.5"
     implementation "org.koin:koin-android-ext:2.1.5"
 
+    // lifecycle
     implementation'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
     implementation'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
+
+    // retrofit, Gson-Converter
+    implementation'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation'com.squareup.okhttp3:logging-interceptor:4.6.0'
+
+    // room
+    kapt("androidx.room:room-compiler:2.4.3")
+    implementation("androidx.room:room-ktx:2.4.3")
 }
