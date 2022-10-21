@@ -28,8 +28,8 @@ class DiaryActivity : BaseActivity<DiaryViewModel, ActivityDiaryBinding>() {
 
     override val viewModel by viewModel<DiaryViewModel>()
 
-    private val diaryMode by lazy { intent.getSerializableExtra(INTENT_KEY_DIARY_MODE) as DiaryMode }
-    private val currentDate by lazy { intent.getSerializableExtra(INTENT_KEY_DIARY_DATE) as Date }
+    private val diaryMode by lazy { intent.getSerializableExtra(INTENT_KEY_MODE) as DiaryMode }
+    private val currentDate by lazy { intent.getSerializableExtra(INTENT_KEY_DATE) as Date }
     private var imageURI: Uri? = null
 
     override fun observeData() {
@@ -58,7 +58,10 @@ class DiaryActivity : BaseActivity<DiaryViewModel, ActivityDiaryBinding>() {
 
         imageURI = diaryModel.imageUri.toUri()
         imageURI?.let {
-            ivDiaryImage.setImageWithGlide(this@DiaryActivity, it)
+            ivDiaryImage.setImageWithGlide(this@DiaryActivity, it) {
+                binding.tvGallery.visibility = View.GONE
+                binding.ivGalleryIcon.visibility = View.GONE
+            }
         }
     }
 
@@ -114,7 +117,7 @@ class DiaryActivity : BaseActivity<DiaryViewModel, ActivityDiaryBinding>() {
     }
 
     private fun loadImage() {
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.type = "image/*"
         galleryImageLauncher.launch(intent)
     }
@@ -124,8 +127,11 @@ class DiaryActivity : BaseActivity<DiaryViewModel, ActivityDiaryBinding>() {
             if (it.resultCode == RESULT_OK) {
                 imageURI = it.data?.data
                 imageURI?.let {
+                    contentResolver.takePersistableUriPermission(it, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
                     binding.ivDiaryImage.setImageWithGlide(this, it) {
                         btnStateChange()
+
                         binding.tvGallery.visibility = View.GONE
                         binding.ivGalleryIcon.visibility = View.GONE
                     }
@@ -171,13 +177,13 @@ class DiaryActivity : BaseActivity<DiaryViewModel, ActivityDiaryBinding>() {
 
     companion object {
         const val TAG = "DiaryActivity"
-        const val INTENT_KEY_DIARY_MODE = "DiaryMode"
-        const val INTENT_KEY_DIARY_DATE = "DiaryDate"
+        const val INTENT_KEY_MODE = "Mode"
+        const val INTENT_KEY_DATE = "Date"
 
         fun newIntent(context: Context, mode: DiaryMode, date: Date) =
             Intent(context, DiaryActivity::class.java).apply {
-                putExtra(INTENT_KEY_DIARY_MODE, mode)
-                putExtra(INTENT_KEY_DIARY_DATE, date)
+                putExtra(INTENT_KEY_MODE, mode)
+                putExtra(INTENT_KEY_DATE, date)
             }
     }
 

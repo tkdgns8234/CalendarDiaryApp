@@ -5,6 +5,7 @@ import com.hoon.calendardiaryapp.data.repository.DatabaseRepositoryImpl
 import com.hoon.calendardiaryapp.data.repository.HolidayApiRepository
 import com.hoon.calendardiaryapp.data.repository.HolidayApiRepositoryImpl
 import com.hoon.calendardiaryapp.view.diary.DiaryViewModel
+import com.hoon.calendardiaryapp.view.diary_view.DiaryViewViewModel
 import com.hoon.calendardiaryapp.view.main.MainViewModel
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.viewmodel.dsl.viewModel
@@ -18,4 +19,5 @@ val appModule = module {
 
     viewModel { MainViewModel(get(), get()) }
     viewModel { DiaryViewModel(get()) }
+    viewModel { DiaryViewViewModel(get()) }
 }

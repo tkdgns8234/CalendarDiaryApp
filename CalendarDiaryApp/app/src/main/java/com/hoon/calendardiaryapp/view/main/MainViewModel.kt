@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.hoon.calendardiaryapp.BaseViewModel
 import com.hoon.calendardiaryapp.data.repository.DatabaseRepository
 import com.hoon.calendardiaryapp.data.repository.HolidayApiRepository
+import com.hoon.calendardiaryapp.extensions.getYearString
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -18,35 +19,42 @@ class MainViewModel(
     private val _mainStateLiveData = MutableLiveData<MainState>(MainState.UnInitialized)
     val mainStateLiveData: LiveData<MainState> get() = _mainStateLiveData
 
-    /**
-     * @param year : string format "yyyy"
-     */
-    fun getHolidaysFromYear(year: String) = viewModelScope.launch {
+    fun getHolidaysFromYear(date: Date) = viewModelScope.launch {
         setState(MainState.Loading.Start)
         // db에 holiday 정보가 저장되어있는지 확인
-        var holidays = databaseRepository.getHolidayInfo(year)
+        var holidays = databaseRepository.getHolidayInfo(date)
 
         if (holidays == null) {
             // holiday 정보가 없으면 rest api 를 통해 holiday list 를 가져온다
-            holidays = holidayApiRepository.getHolidaysFromYear(year)
+            holidays = holidayApiRepository.getHolidaysFromYear(date)
             holidays?.let {
                 // db update
-                databaseRepository.updateHolidayInfo(year, holidays)
+                databaseRepository.updateHolidayInfo(date.getYearString(), holidays)
             }
         }
 
         if (holidays == null) {
-            setState(MainState.Error(ERROR_MSG_LOAD_FAILED))
+            setState(MainState.GetHolidaysFromYear.Fail)
         } else {
-            setState(MainState.Success.GetHolidaysFromYear(holidays))
+            setState(MainState.GetHolidaysFromYear.Success(holidays))
         }
         setState(MainState.Loading.End)
     }
 
-    fun updateDateContents(date: Date) = viewModelScope.launch {
+    fun getDiaryContents(date: Date) = viewModelScope.launch {
         val diaryModel = databaseRepository.getDiaryContents(date)
-        diaryModel?.let {
-            setState(MainState.Success.UpdateDateContents(it))
+        Log.e("tag", diaryModel.toString())
+        if (diaryModel != null) {
+            setState(MainState.GetDiaryContents.Success(diaryModel))
+        } else {
+            setState(MainState.GetDiaryContents.Fail(date))
+        }
+    }
+
+    fun getDiaryContentsInMonth(date: Date) = viewModelScope.launch {
+        val diaryList = databaseRepository.getDiaryContentsInMonth(date)
+        diaryList?.let {
+            setState(MainState.UpdateDiaryWrittenList(it))
         }
     }
 
@@ -56,6 +64,5 @@ class MainViewModel(
 
     companion object {
         const val TAG = "MainViewModel"
-        const val ERROR_MSG_LOAD_FAILED = "공휴일 정보를 불러오는데 실패하였습니다."
     }
 }

@@ -5,7 +5,7 @@ import com.hoon.calendardiaryapp.data.database.DayEntity
 import com.hoon.calendardiaryapp.data.database.DiaryEntity
 import com.hoon.calendardiaryapp.data.model.DiaryModel
 import com.hoon.calendardiaryapp.data.model.HolidayModel
-import com.hoon.calendardiaryapp.util.Constants.DB_DIARY_ENTITY_PK_PATTERN
+import com.hoon.calendardiaryapp.util.Constants.DATE_STRING_PATTERN
 import com.hoon.calendardiaryapp.util.DateUtil
 
 fun HolidayResponseItem.toModel(): HolidayModel {
@@ -26,7 +26,7 @@ fun HolidayModel.toEntity(year: String): DayEntity {
 
 fun DiaryEntity.toModel(): DiaryModel {
     return DiaryModel(
-        DateUtil.parseDate(this.date, DB_DIARY_ENTITY_PK_PATTERN),
+        DateUtil.parseDate(this.date, DATE_STRING_PATTERN),
         this.title,
         this.imageUri,
         this.contents
@@ -35,11 +35,9 @@ fun DiaryEntity.toModel(): DiaryModel {
 
 fun DiaryModel.toEntity(): DiaryEntity {
     return DiaryEntity(
-        DateUtil.formatDate(this.date, DB_DIARY_ENTITY_PK_PATTERN),
+        DateUtil.formatDate(this.date, DATE_STRING_PATTERN),
         this.title,
         this.imageUri,
         this.contents
     )
 }
-
-//fun List<HolidayModel>.toEntity(year: String): List<DayEntity> = map { it.toEntity(year) }

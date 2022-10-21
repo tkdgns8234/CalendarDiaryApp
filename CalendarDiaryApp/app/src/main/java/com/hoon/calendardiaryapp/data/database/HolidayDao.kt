@@ -4,6 +4,7 @@ import androidx.room.*
 
 @Dao
 interface HolidayDao {
+
     /**
      * YearEntity
      */
@@ -29,7 +30,7 @@ interface HolidayDao {
     fun getDays(year: String) : List<DayEntity>
 
     /**
-     * Year with Day
+     * @param year: 'yyyy' format
      */
     @Transaction
     @Query("SELECT * FROM YearEntity WHERE year = :year")

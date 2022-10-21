@@ -26,6 +26,10 @@
     <string name="yes">yes</string>
     <string name="no">no</string>
     <string name="select_photo">Please select a photo.</string>
-    <string name="deselected_photo">deselected photo.</string>
+    <string name="deselected_photo">Deselected photo.</string>
+    <string name="failed_to_load_holidays">Failed to load holiday information.</string>
+    <string name="dialog_job_delete_msg">Are you sure you want to delete?</string>
+    <string name="cancel">Cancel</string>
+    <string name="failed_to_load_diary">Failed to load diary information.</string>
 
 </resources>
