@@ -4,15 +4,20 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.GridLayoutManager
 import com.hoon.calendardiaryapp.BaseActivity
 import com.hoon.calendardiaryapp.R
+import com.hoon.calendardiaryapp.data.model.DiaryModel
 import com.hoon.calendardiaryapp.data.model.HolidayModel
 import com.hoon.calendardiaryapp.databinding.ActivityMainBinding
+import com.hoon.calendardiaryapp.extensions.setImageWithGlide
+import com.hoon.calendardiaryapp.extensions.toVisibility
 import com.hoon.calendardiaryapp.extensions.toast
 import com.hoon.calendardiaryapp.util.CalendarManager
 import com.hoon.calendardiaryapp.util.DateUtil
 import com.hoon.calendardiaryapp.view.adapter.CalenderAdapter
+import com.hoon.calendardiaryapp.view.diary.DiaryActivity
 import com.hoon.calendardiaryapp.view.settings.SettingsActivity
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
@@ -37,6 +42,9 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
                 is MainState.Success.GetHolidaysFromYear -> {
                     handleGetHolidaysFromYear(it.list)
                 }
+                is MainState.Success.UpdateDateContents -> {
+                    handleUpdateDateContents(it.diaryModel)
+                }
                 is MainState.Loading -> {
                     handleLoadingState(it)
                 }
@@ -50,7 +58,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
     private fun initViews() = with(binding) {
         setSupportActionBar(toolbar)
 
-        adapter = CalenderAdapter(onClickListener, updateUIListener)
+        adapter = CalenderAdapter(onDateClickListener, updateUIListener)
         rvCalender.layoutManager =
             GridLayoutManager(this@MainActivity, CalendarManager.DAYS_OF_WEEK)
         rvCalender.adapter = adapter
@@ -62,10 +70,29 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         btnPrevMonth.setOnClickListener {
             adapter.prevMonth()
         }
+
+        layoutDiary.setOnClickListener { startDiaryActivity(DiaryActivity.DiaryMode.MODIFY) }
+
+        btnRegisterDiary.setOnClickListener { startDiaryActivity(DiaryActivity.DiaryMode.NEW_REGISTER) }
+    }
+
+    private fun startDiaryActivity(mode: DiaryActivity.DiaryMode) {
+        val date = adapter.getSelectedDate()
+        date?.let {
+            val intent =
+                DiaryActivity.newIntent(this@MainActivity, mode, date)
+            startActivity(intent)
+        }
     }
 
     private fun handleGetHolidaysFromYear(list: List<HolidayModel>) {
         adapter.updateHolidays(list.map { it.date })
+    }
+
+
+    private fun handleUpdateDateContents(diaryModel: DiaryModel) = with(binding) {
+        tvDiaryTitle.text = diaryModel.title
+        ivDiaryImage.setImageWithGlide(this@MainActivity, diaryModel.imageUri.toUri())
     }
 
     private fun handleLoadingState(state: MainState.Loading) = with(binding) {
@@ -97,14 +124,19 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         }
     }
 
-    private val onClickListener: (date: Date) -> Unit = { date ->
+    private val onDateClickListener: (date: Date) -> Unit = { date ->
         with(binding) {
             val pattern = resources.getString(R.string.dateViewFormat)
             val dateString = DateUtil.formatDate(date, pattern)
-
             tvSelectedDate.text = dateString
 
-            // TODO db에 현재 날짜에대한 데이터가 있으면 diaryView update
+            val now = Date(System.currentTimeMillis())
+            val isBelowThanToday = date.after(now).not() // 현재 날짜보다 크지 않은 경우 true
+            btnRegisterDiary.visibility = isBelowThanToday.toVisibility()
+
+            adapter.getSelectedDate()?.let { date ->
+                viewModel.updateDateContents(date)
+            }
         }
     }
 

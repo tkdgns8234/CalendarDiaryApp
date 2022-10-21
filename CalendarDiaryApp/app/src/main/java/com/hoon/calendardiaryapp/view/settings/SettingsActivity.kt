@@ -54,9 +54,9 @@ class SettingsActivity : BaseActivity<BaseViewModel, ActivitySettingsBinding>() 
 
     override fun onResume() {
         super.onResume()
-        val test = LocaleHelper.getPersistedLocale(this)
+        val locale = LocaleHelper.getPersistedLocale(this)
 
-        when (test) {
+        when (locale) {
             LocaleHelper.LANGUAGE_KOREAN -> {
                 binding.radioGroupLanguage.check(R.id.radio_btn_korean)
             }

@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../layout/custom_preview.xml" value="0.17527173913043478" />
         <entry key="..\:/Users/Administrator/Desktop/ct/CalendarDiaryApp/CalendarDiaryApp/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.228" />
         <entry key="..\:/Users/Administrator/Desktop/ct/CalendarDiaryApp/CalendarDiaryApp/app/src/main/res/drawable/ic_baseline_calendar_today_24.xml" value="0.1325" />
         <entry key="..\:/Users/Administrator/Desktop/ct/CalendarDiaryApp/CalendarDiaryApp/app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.228" />
@@ -19,7 +20,11 @@
         <entry key="..\:/Users/Administrator/Desktop/ct/CalendarDiaryApp/CalendarDiaryApp/app/src/main/res/layout/item_calender.xml" value="0.5" />
         <entry key="..\:/Users/Administrator/Desktop/ct/CalendarDiaryApp/CalendarDiaryApp/app/src/main/res/menu/menu_toolbar.xml" value="0.3265625" />
         <entry key="..\:/Users/Administrator/Desktop/ct/CalendarDiaryApp/CalendarDiaryApp/app/src/main/res/menu/menu_toolbar_diary.xml" value="0.2713541666666667" />
+        <entry key="app/src/main/res/drawable/selector_btn_save.xml" value="0.21" />
+        <entry key="app/src/main/res/layout/activity_diary.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_diary_view.xml" value="0.15092592592592594" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/menu/menu_toolbar_diary.xml" value="0.18333333333333332" />
       </map>
     </option>
   </component>

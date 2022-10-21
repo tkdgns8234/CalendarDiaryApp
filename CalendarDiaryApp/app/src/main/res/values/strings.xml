@@ -1,16 +1,20 @@
 <resources>
     <string name="app_name">CalendarDiaryApp</string>
+
     <string name="title_my_photo_diary">나의 사진일기</string>
     <string name="title_register_new_diary">새로운 일기 등록</string>
     <string name="title_settings">설정</string>
+
+    <string name="dateViewFormat">yyyy년 MM월 dd일 EE요일</string>
     <string name="btn_register_diary">일기 등록하기</string>
+
     <string name="language">언어</string>
     <string name="korean">한국어</string>
     <string name="english">English</string>
     <string name="title">제목</string>
     <string name="content">내용</string>
     <string name="save">저장</string>
-    <string name="correct">수정</string>
+    <string name="edit">수정</string>
     <string name="delete">삭제</string>
 
     <string name="monday">월</string>
@@ -20,5 +24,10 @@
     <string name="friday">금</string>
     <string name="saturday">토</string>
     <string name="sunday">일</string>
-    <string name="dateViewFormat">yyyy년 MM월 dd일 EE요일</string>
+    <string name="title_edit_diary">일기 수정</string>
+    <string name="dialog_job_cancel_msg">" 작성 중인 글이 있습니다. \n 정말로 취소하시겠습니까?"</string>
+    <string name="yes">예</string>
+    <string name="no">아니오</string>
+    <string name="select_photo">사진을 선택해주세요.</string>
+    <string name="deselected_photo">사진 선택이 취소되었습니다.</string>
 </resources>

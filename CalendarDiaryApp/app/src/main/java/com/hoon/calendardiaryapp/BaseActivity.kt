@@ -2,6 +2,7 @@ package com.hoon.calendardiaryapp
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.hoon.calendardiaryapp.util.LocaleHelper

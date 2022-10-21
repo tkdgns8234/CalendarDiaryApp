@@ -43,10 +43,10 @@ class CalenderAdapter(
             // 현재 표시되는 viewHolder 의 날짜가 이번 월인 경우 clickable
             holder.itemView.setOnClickListener {
                 val date = calendarManager.days[position]
-                onClickListener(date)
-
                 selectedDate = DateUtil.formatDate(date, HOLIDAY_STRING_PATTERN) // 클릭한 날짜 회색배경 처리
+
                 refreshView(calendarManager.calendar)
+                onClickListener(date)
             }
         } else {
             // 간혹 기존 리스너가 제거되지 않는 경우가 있어 처리
@@ -73,15 +73,6 @@ class CalenderAdapter(
         refreshView(calendarManager.calendar) // update holidays and other will stay the same
     }
 
-    /**
-     *  변경된 calendar 값을 이용해 UI 업데이트
-     *  ViewHolder class 의 bind() 호출로 이어짐
-     */
-    private fun refreshView(calendar: Calendar) {
-        notifyDataSetChanged()
-        updateUIListener(calendar)
-    }
-
     fun updateSelectedDate() {
         val now = Date(System.currentTimeMillis())
         selectedDate = DateUtil.formatDate(now, HOLIDAY_STRING_PATTERN)
@@ -93,6 +84,21 @@ class CalenderAdapter(
         }
 
         onClickListener(now) // call activity click listener
+    }
+
+    fun getSelectedDate(): Date? {
+        return selectedDate?.run {
+            DateUtil.parseDate(this, HOLIDAY_STRING_PATTERN)
+        }
+    }
+
+    /**
+     *  변경된 calendar 값을 이용해 UI 업데이트
+     *  ViewHolder class 의 bind() 호출로 이어짐
+     */
+    private fun refreshView(calendar: Calendar) {
+        notifyDataSetChanged()
+        updateUIListener(calendar)
     }
 
     inner class ViewHolder(
