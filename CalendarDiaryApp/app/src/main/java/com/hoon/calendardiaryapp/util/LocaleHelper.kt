@@ -40,7 +40,7 @@ object LocaleHelper {
         } else {
             Locale(localeSpec)
         }
-        Locale.setDefault(locale)
+
         action?.let {
             it(locale.language)
         }

@@ -12,7 +12,6 @@ import com.hoon.calendardiaryapp.R
 import com.hoon.calendardiaryapp.databinding.ActivityDiaryViewBinding
 import com.hoon.calendardiaryapp.extensions.setImageWithGlide
 import com.hoon.calendardiaryapp.extensions.toast
-import com.hoon.calendardiaryapp.util.Constants.DATE_STRING_PATTERN
 import com.hoon.calendardiaryapp.util.DateUtil
 import com.hoon.calendardiaryapp.view.diary.DiaryActivity
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -44,7 +43,7 @@ class DiaryViewActivity : BaseActivity<DiaryViewViewModel, ActivityDiaryViewBind
     override fun initViews() = with(binding) {
         setSupportActionBar(toolbar)
 
-        toolbar.title = DateUtil.formatDate(currentDate, DATE_STRING_PATTERN)
+        toolbar.title = DateUtil.dateToString(currentDate, resources.getString(R.string.dateViewFormat))
 
         btnDelete.setOnClickListener { showDialogForDeleteEvent() }
         btnCorrect.setOnClickListener { startDiaryActivity(DiaryActivity.DiaryMode.MODIFY) }

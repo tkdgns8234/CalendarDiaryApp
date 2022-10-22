@@ -6,10 +6,10 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface HolidayApiService {
+
     /**
      * @param year : 'yyyy' format
      */
-
     @GET("/api/v3/PublicHolidays/{year}/KR")
     suspend fun searchHolidays(
         @Path("year") year: String

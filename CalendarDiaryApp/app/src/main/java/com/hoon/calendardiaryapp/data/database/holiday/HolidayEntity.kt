@@ -1,4 +1,4 @@
-package com.hoon.calendardiaryapp.data.database
+package com.hoon.calendardiaryapp.data.database.holiday
 
 import androidx.room.*
 

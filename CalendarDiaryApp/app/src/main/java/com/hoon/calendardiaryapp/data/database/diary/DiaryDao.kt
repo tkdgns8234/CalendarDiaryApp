@@ -1,4 +1,4 @@
-package com.hoon.calendardiaryapp.data.database
+package com.hoon.calendardiaryapp.data.database.diary
 
 import androidx.room.*
 
@@ -12,7 +12,7 @@ interface DiaryDao {
 
     /**
      * ~년 ~월에 해당하는 다이어리 정보를 return
-     * @param dateYearMonth : 'yyyy-mm' format
+     * @param dateYearMonth : 'yyyy-MM' format
      */
     @Query("SELECT * FROM DiaryEntity WHERE date LIKE :dateYearMonth || '%'")
     fun getDiaryEntityInMonth(dateYearMonth: String): List<DiaryEntity>

@@ -1,6 +1,5 @@
 package com.hoon.calendardiaryapp.util
 
-import android.util.Log
 import java.util.*
 
 class CalendarManager {
@@ -27,7 +26,7 @@ class CalendarManager {
     }
 
     fun changeToNextMonth(refreshCallback: (Calendar) -> Unit) {
-        if (calendar.get(Calendar.MONTH) == Calendar.DECEMBER) {
+        if (calendar.get(Calendar.MONTH) == Calendar.DECEMBER) { // 12월인 경우
             calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + 1)
             calendar.set(Calendar.MONTH, 0)
         } else {
@@ -50,8 +49,8 @@ class CalendarManager {
         calendar.set(Calendar.DATE, 1)
 
         val currentMonthMaxDate = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-        val prevMonthOffset = calendar.get(Calendar.DAY_OF_WEEK) - 1
-        val nextMonthOffset = 7 - (prevMonthOffset + currentMonthMaxDate) % DAYS_OF_WEEK
+        val prevMonthOffset = calendar.get(Calendar.DAY_OF_WEEK) - 1 // 캘린더의 1일이 무슨 요일인지에 따라 값이 달라짐
+        val nextMonthOffset = DAYS_OF_WEEK - (prevMonthOffset + currentMonthMaxDate) % DAYS_OF_WEEK
 
         makePrevMonthOffset(calendar.clone() as Calendar, prevMonthOffset)
         makeCurrentMonth(calendar)
@@ -71,7 +70,7 @@ class CalendarManager {
     }
 
     private fun makePrevMonthOffset(calendar: Calendar, prevMonthTailOffset: Int) {
-        calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 1)
+        calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 1) // 이전 월로 이동
         val maxDate = calendar.getActualMaximum(Calendar.DATE) // 이전 월의 max date
         var maxOffsetDate = maxDate - prevMonthTailOffset //
 
@@ -82,7 +81,7 @@ class CalendarManager {
     }
 
     private fun makeNextMonthOffset(calendar: Calendar, nextMonthHeadOffset: Int) {
-        calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1)
+        calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1) // 다음 월로 이동
         var date = 1
 
         for (i in 1..nextMonthHeadOffset) {

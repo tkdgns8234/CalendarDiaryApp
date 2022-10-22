@@ -5,9 +5,9 @@ import com.hoon.calendardiaryapp.data.model.HolidayModel
 import java.util.*
 
 interface DatabaseRepository {
-    suspend fun getHolidayInfo(date: Date): List<HolidayModel>?
+    suspend fun getHolidaysInfo(date: Date): List<HolidayModel>?
 
-    suspend fun updateHolidayInfo(year: String, holidayModels: List<HolidayModel>)
+    suspend fun updateHolidaysInfo(date: Date, holidayModels: List<HolidayModel>)
 
     suspend fun getDiaryContents(date: Date): DiaryModel?
 

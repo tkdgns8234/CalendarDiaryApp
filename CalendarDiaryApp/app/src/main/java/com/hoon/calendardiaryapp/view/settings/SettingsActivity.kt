@@ -21,6 +21,13 @@ class SettingsActivity : BaseActivity<BaseViewModel, ActivitySettingsBinding>() 
 
     override fun observeData() {}
 
+    companion object {
+        const val TAG = "SettingsActivity"
+
+        fun newIntent(context: Context) =
+            Intent(context, SettingsActivity::class.java)
+    }
+
     override fun initViews() = with(binding) {
         toolbar.setNavigationOnClickListener {
             finish()
@@ -35,18 +42,6 @@ class SettingsActivity : BaseActivity<BaseViewModel, ActivitySettingsBinding>() 
                     updateLocaleInfo(LocaleHelper.LANGUAGE_ENGLISH)
                 }
             }
-        }
-    }
-
-    private fun updateLocaleInfo(language: String) {
-        val currentLocale = LocaleHelper.getPersistedLocale(this)
-
-        if (language != currentLocale) {
-
-            LocaleHelper.setLocale(this@SettingsActivity, language) {
-                PreferenceManager(this).putCurrentLanguage(it)
-            }
-            recreate() // necessary here because this Activity is currently running and thus a recreate() in onResume() would be too late
         }
     }
 
@@ -65,10 +60,15 @@ class SettingsActivity : BaseActivity<BaseViewModel, ActivitySettingsBinding>() 
         }
     }
 
-    companion object {
-        const val TAG = "SettingsActivity"
+    private fun updateLocaleInfo(language: String) {
+        val currentLocale = LocaleHelper.getPersistedLocale(this)
 
-        fun newIntent(context: Context) =
-            Intent(context, SettingsActivity::class.java)
+        if (language != currentLocale) {
+
+            LocaleHelper.setLocale(this@SettingsActivity, language) {
+                PreferenceManager(this).putCurrentLanguage(it)
+            }
+            recreate() // 언어 변경 즉시 적용
+        }
     }
 }

@@ -15,20 +15,20 @@ class MainViewModel(
     private val databaseRepository: DatabaseRepository
 ) : BaseViewModel() {
 
-    private val _mainStateLiveData = MutableLiveData<MainState>()
+    private val _mainStateLiveData = MutableLiveData<MainState>(MainState.UnInitialized)
     val mainStateLiveData: LiveData<MainState> get() = _mainStateLiveData
 
     fun getHolidaysFromYear(date: Date) = viewModelScope.launch {
         setState(MainState.Loading.Start)
         // db에 holiday 정보가 저장되어있는지 확인
-        var holidays = databaseRepository.getHolidayInfo(date)
+        var holidays = databaseRepository.getHolidaysInfo(date)
 
         if (holidays == null) {
             // holiday 정보가 없으면 rest api 를 통해 holiday list 를 가져온다
             holidays = holidayApiRepository.getHolidaysFromYear(date)
             holidays?.let {
                 // db update
-                databaseRepository.updateHolidayInfo(date.getYearString(), holidays)
+                databaseRepository.updateHolidaysInfo(date, holidays)
             }
         }
 
@@ -57,15 +57,8 @@ class MainViewModel(
         }
     }
 
-    fun resetMainState() {
-        setState(MainState.UnInitialized)
-    }
-
     private fun setState(state: MainState) {
         _mainStateLiveData.value = state
     }
 
-    companion object {
-        const val TAG = "MainViewModel"
-    }
 }

@@ -1,7 +1,7 @@
 package com.hoon.calendardiaryapp.data.repository
 
-import com.hoon.calendardiaryapp.data.database.DiaryDao
-import com.hoon.calendardiaryapp.data.database.HolidayDao
+import com.hoon.calendardiaryapp.data.database.diary.DiaryDao
+import com.hoon.calendardiaryapp.data.database.holiday.HolidayDao
 import com.hoon.calendardiaryapp.data.database.YearEntity
 import com.hoon.calendardiaryapp.data.model.DiaryModel
 import com.hoon.calendardiaryapp.data.model.HolidayModel
@@ -9,7 +9,7 @@ import com.hoon.calendardiaryapp.extensions.getYearString
 import com.hoon.calendardiaryapp.extensions.toEntity
 import com.hoon.calendardiaryapp.extensions.toModel
 import com.hoon.calendardiaryapp.util.Constants.DATE_STRING_PATTERN
-import com.hoon.calendardiaryapp.util.Constants.DB_DIARY_ENTITY_YEAR_MONTH_PATTERN
+import com.hoon.calendardiaryapp.util.Constants.DATE_STRING_YEAR_MONTH_PATTERN
 import com.hoon.calendardiaryapp.util.DateUtil
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -21,7 +21,7 @@ class DatabaseRepositoryImpl(
     private val ioDispatcher: CoroutineDispatcher
 ) : DatabaseRepository {
 
-    override suspend fun getHolidayInfo(date: Date) = withContext(ioDispatcher) {
+    override suspend fun getHolidaysInfo(date: Date) = withContext(ioDispatcher) {
         holidayDao.getYearWithDays(date.getYearString())
             ?.days
             ?.map {
@@ -29,25 +29,22 @@ class DatabaseRepositoryImpl(
             }
     }
 
-    /**
-     * @param year : "yyyy" format
-     */
-    override suspend fun updateHolidayInfo(year: String, holidayModels: List<HolidayModel>) =
+    override suspend fun updateHolidaysInfo(date: Date, holidayModels: List<HolidayModel>) =
         withContext(ioDispatcher) {
-            holidayDao.insertYear(YearEntity(year))
+            holidayDao.insertYear(YearEntity(date.getYearString()))
             holidayModels.forEach {
-                holidayDao.insertDate(it.toEntity(year))
+                holidayDao.insertDate(it.toEntity(date.getYearString()))
             }
         }
 
     override suspend fun getDiaryContents(date: Date): DiaryModel? = withContext(ioDispatcher) {
-        val dateString = DateUtil.formatDate(date, DATE_STRING_PATTERN)
+        val dateString = DateUtil.dateToString(date, DATE_STRING_PATTERN)
         val diaryEntity = diaryDao.getDiaryEntity(dateString)
         diaryEntity?.toModel()
     }
 
     override suspend fun getDiaryContentsInMonth(date: Date): List<DiaryModel>? = withContext(ioDispatcher){
-        val yearMonthString = DateUtil.formatDate(date, DB_DIARY_ENTITY_YEAR_MONTH_PATTERN)
+        val yearMonthString = DateUtil.dateToString(date, DATE_STRING_YEAR_MONTH_PATTERN)
         diaryDao.getDiaryEntityInMonth(yearMonthString).map { it.toModel() }
     }
 

@@ -13,14 +13,14 @@ import com.hoon.calendardiaryapp.util.DateUtil
 import java.util.*
 
 class CalenderAdapter(
-    private val onClickListener: (Date) -> Unit,
-    private val updateUIListener: (Date) -> Unit
+    private val onDateClickCallback: (Date) -> Unit,
+    private val updateUICallback: (Date) -> Unit
 ) : RecyclerView.Adapter<CalenderAdapter.ViewHolder>() {
 
     private val calendarManager = CalendarManager()
     private var selectedDate: String? = null // user 가 선택한 날짜
     private var holidays: List<String>? = null  // e.g) yyyy-mm-dd
-    private var diaryWrittenList: List<String>? = null // 일기가 쓰여있는 날짜
+    private var diaryWrittenDateList: List<String>? = null // 일기가 쓰여있는 날짜
 
     init {
         calendarManager.initCalendarManager { refreshView(it) }
@@ -43,10 +43,10 @@ class CalenderAdapter(
             // 현재 표시되는 viewHolder 의 날짜가 이번 월인 경우 clickable
             holder.itemView.setOnClickListener {
                 val date = calendarManager.days[position]
-                selectedDate = DateUtil.formatDate(date, DATE_STRING_PATTERN) // 클릭한 날짜 회색배경 처리
+                selectedDate = DateUtil.dateToString(date, DATE_STRING_PATTERN) // 클릭한 날짜 회색배경 처리
 
                 refreshView(calendarManager.calendar)
-                onClickListener(date)
+                onDateClickCallback(date)
             }
         } else {
             // 간혹 기존 리스너가 제거되지 않는 경우가 있어 처리
@@ -70,23 +70,23 @@ class CalenderAdapter(
 
     fun updateHolidays(holidays: List<String>) {
         this.holidays = holidays
-        refreshView(calendarManager.calendar) // update holidays and other will stay the same
+        refreshView(calendarManager.calendar)
     }
 
     /**
      * 캘린더에 다이어리 작성된 날짜 점 찍기
-     * @param list : 현재 Month 의 다이어리 작성된 날짜 list
+     * @param list : 현재 Month에 해당하는 다이어리 작성된 날짜 list
      */
     fun updateDiaryWrittenList(list: List<DiaryModel>) {
-        this.diaryWrittenList = list.map {
-            DateUtil.formatDate(it.date, DATE_STRING_PATTERN)
+        this.diaryWrittenDateList = list.map {
+            DateUtil.dateToString(it.date, DATE_STRING_PATTERN)
         }
         refreshView(calendarManager.calendar)
     }
 
     fun updateSelectedDate() {
         val now = Date(System.currentTimeMillis())
-        selectedDate = DateUtil.formatDate(now, DATE_STRING_PATTERN)
+        selectedDate = DateUtil.dateToString(now, DATE_STRING_PATTERN)
 
         val year = now.getYearString().toInt()
         val month = now.getMonthString().toInt()
@@ -94,12 +94,12 @@ class CalenderAdapter(
             refreshView(it)
         }
 
-        onClickListener(now) // call activity click listener
+        onDateClickCallback(now) // call activity click listener
     }
 
     fun getSelectedDate(): Date? {
         return selectedDate?.run {
-            DateUtil.parseDate(this, DATE_STRING_PATTERN)
+            DateUtil.stringToDate(this, DATE_STRING_PATTERN)
         }
     }
 
@@ -109,7 +109,7 @@ class CalenderAdapter(
      */
     private fun refreshView(calendar: Calendar) {
         notifyDataSetChanged()
-        updateUIListener(calendar.time)
+        updateUICallback(calendar.time)
     }
 
     inner class ViewHolder(
@@ -119,7 +119,7 @@ class CalenderAdapter(
         fun bind(position: Int) = with(binding) {
             val currentViewHolderDate: Date = calendarManager.days[position]
             val currentViewHolderDateString =
-                DateUtil.formatDate(currentViewHolderDate, DATE_STRING_PATTERN)
+                DateUtil.dateToString(currentViewHolderDate, DATE_STRING_PATTERN)
 
             val currentViewHolderMonth = currentViewHolderDate.getMonthString().toInt()
             val calendarMonth = calendarManager.calendar.get(Calendar.MONTH) + 1 // 1월 = 0
@@ -129,7 +129,7 @@ class CalenderAdapter(
             val isHoliday =
                 holidays != null && holidays!!.contains(currentViewHolderDateString)
 
-            if (currentViewHolderMonth != calendarMonth) {  // 이전,다음 월 날짜인 경우
+            if (currentViewHolderMonth != calendarMonth) {  // 이전,다음 월 날짜인 경우 토, 일, 공휴일 상관없이 회색 처리
                 tvDay.setColor(root.context, R.color.calender_date_gray)
             } else if (isSunday || isHoliday) {
                 tvDay.setColor(root.context, R.color.calender_date_red)
@@ -153,9 +153,10 @@ class CalenderAdapter(
                 ivSelectedEffect.alpha = 0F
             }
 
-            diaryWrittenList?.let {
-                val isContains = it.contains(currentViewHolderDateString)
-                ivDiaryDot.visibility = isContains.toVisibility()
+            diaryWrittenDateList?.let {
+                // 다이어리가 작성된 날짜인 경우 점 추가
+                val isWrittenDiaryDate = it.contains(currentViewHolderDateString)
+                ivDiaryDot.visibility = isWrittenDiaryDate.toVisibility()
             }
 
             tvDay.text = currentViewHolderDate.getDayString()

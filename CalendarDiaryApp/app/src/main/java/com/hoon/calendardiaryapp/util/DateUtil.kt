@@ -5,7 +5,7 @@ import java.util.*
 
 object DateUtil {
 
-    fun parseDate(dateString: String, pattern: String): Date {
+    fun stringToDate(dateString: String, pattern: String): Date {
         try {
             val format = SimpleDateFormat(pattern)
             return format.parse(dateString)
@@ -14,7 +14,7 @@ object DateUtil {
         }
     }
 
-    fun formatDate(date: Date, pattern: String): String {
+    fun dateToString(date: Date, pattern: String): String {
         val format = SimpleDateFormat(pattern)
         return format.format(date)
     }

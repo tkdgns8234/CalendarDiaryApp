@@ -2,7 +2,7 @@ package com.hoon.calendardiaryapp.extensions
 
 import com.hoon.calendardiaryapp.data.api.response.HolidayResponseItem
 import com.hoon.calendardiaryapp.data.database.DayEntity
-import com.hoon.calendardiaryapp.data.database.DiaryEntity
+import com.hoon.calendardiaryapp.data.database.diary.DiaryEntity
 import com.hoon.calendardiaryapp.data.model.DiaryModel
 import com.hoon.calendardiaryapp.data.model.HolidayModel
 import com.hoon.calendardiaryapp.util.Constants.DATE_STRING_PATTERN
@@ -26,7 +26,7 @@ fun HolidayModel.toEntity(year: String): DayEntity {
 
 fun DiaryEntity.toModel(): DiaryModel {
     return DiaryModel(
-        DateUtil.parseDate(this.date, DATE_STRING_PATTERN),
+        DateUtil.stringToDate(this.date, DATE_STRING_PATTERN),
         this.title,
         this.imageUri,
         this.contents
@@ -35,7 +35,7 @@ fun DiaryEntity.toModel(): DiaryModel {
 
 fun DiaryModel.toEntity(): DiaryEntity {
     return DiaryEntity(
-        DateUtil.formatDate(this.date, DATE_STRING_PATTERN),
+        DateUtil.dateToString(this.date, DATE_STRING_PATTERN),
         this.title,
         this.imageUri,
         this.contents

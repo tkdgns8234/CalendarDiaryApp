@@ -1,6 +1,5 @@
 package com.hoon.calendardiaryapp.view.diary
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -30,7 +29,7 @@ class DiaryViewModel(
         setState(DiaryState.Loading.End)
     }
 
-    fun saveDiaryDataInDB(diaryModel: DiaryModel) = viewModelScope.launch {
+    fun insertDiaryDataInDB(diaryModel: DiaryModel) = viewModelScope.launch {
         databaseRepository.insertDiaryContents(diaryModel)
     }
 

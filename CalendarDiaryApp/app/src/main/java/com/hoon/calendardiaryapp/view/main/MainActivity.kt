@@ -1,6 +1,5 @@
 package com.hoon.calendardiaryapp.view.main
 
-import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -64,7 +63,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         viewModel.mainStateLiveData.observe(this) {
             when (it) {
                 is MainState.GetHolidaysFromYear -> {
-                    // Holiday update
+                    // Holidays update
                     handleGetHolidaysFromYear(it)
                 }
                 is MainState.GetDiaryContents -> {
@@ -88,7 +87,9 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
     override fun onResume() {
         adapter.getSelectedDate()?.let {
+            // Main UI 하단의 diary 내용 update
             viewModel.getDiaryContents(it)
+            // 캘린더에 다이어리 작성된 날짜 점 찍기
             viewModel.getDiaryContentsInMonth(it)
         }
 
@@ -149,6 +150,9 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         toast(message)
     }
 
+    /**
+     * calendar 변경 및 초기화 되는 경우 호출됨
+     */
     private val updateUIListener: (Date) -> Unit = { date ->
         with(binding) {
             val year = date.getYearString()
@@ -171,9 +175,12 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         }
     }
 
+    /**
+     * calendar 날짜 클릭 시 호출됨
+     */
     private val onDateClickListener: (date: Date) -> Unit = { date ->
         val pattern = resources.getString(R.string.dateViewFormat)
-        val dateString = DateUtil.formatDate(date, pattern)
+        val dateString = DateUtil.dateToString(date, pattern)
         binding.tvSelectedDate.text = dateString
 
         // 선택한 날짜에대한 diary 정보 load

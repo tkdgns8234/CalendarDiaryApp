@@ -4,6 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.hoon.calendardiaryapp.data.database.diary.DiaryDao
+import com.hoon.calendardiaryapp.data.database.holiday.HolidayDao
+import com.hoon.calendardiaryapp.data.database.diary.DiaryEntity
+import com.hoon.calendardiaryapp.data.database.holiday.DayEntity
+import com.hoon.calendardiaryapp.data.database.holiday.YearEntity
 
 @Database(entities = [YearEntity::class, DayEntity::class, DiaryEntity::class], version = 1)
 abstract class DiaryAppDatabase : RoomDatabase() {

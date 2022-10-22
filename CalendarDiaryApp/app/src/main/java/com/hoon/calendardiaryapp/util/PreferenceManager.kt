@@ -24,6 +24,9 @@ class PreferenceManager(
         editor.apply()
     }
 
+    /**
+     * 현재 설정된 language 가 없는경우 system language 로 설정
+     */
     fun getCurrentLanguage(): String {
         return pref.getString(KEY_CURRENT_LANGUAGE, LocaleHelper.LANGUAGE_SYSTEM)!!
     }

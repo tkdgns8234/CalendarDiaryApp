@@ -16,6 +16,7 @@ import com.hoon.calendardiaryapp.R
 import com.hoon.calendardiaryapp.data.model.DiaryModel
 import com.hoon.calendardiaryapp.databinding.ActivityDiaryBinding
 import com.hoon.calendardiaryapp.extensions.setImageWithGlide
+import com.hoon.calendardiaryapp.extensions.toVisibility
 import com.hoon.calendardiaryapp.extensions.toast
 import com.hoon.calendardiaryapp.util.DateUtil
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -69,7 +70,7 @@ class DiaryActivity : BaseActivity<DiaryViewModel, ActivityDiaryBinding>() {
         }
 
         val pattern = resources.getString(R.string.dateViewFormat)
-        val dateString = DateUtil.formatDate(currentDate, pattern)
+        val dateString = DateUtil.dateToString(currentDate, pattern)
         tvCurrentDate.text = dateString
 
         setSupportActionBar(toolbar)
@@ -80,7 +81,7 @@ class DiaryActivity : BaseActivity<DiaryViewModel, ActivityDiaryBinding>() {
         etTitle.addTextChangedListener { btnStateChange() }
         etContent.addTextChangedListener { btnStateChange() }
         btnSave.setOnClickListener {
-            viewModel.saveDiaryDataInDB(
+            viewModel.insertDiaryDataInDB(
                 DiaryModel(
                     date = currentDate,
                     title = etTitle.text.toString(),
@@ -108,7 +109,7 @@ class DiaryActivity : BaseActivity<DiaryViewModel, ActivityDiaryBinding>() {
 
     private fun handleSuccessFetchData(diaryModel: DiaryModel) = with(binding) {
         tvCurrentDate.text =
-            DateUtil.formatDate(diaryModel.date, resources.getString(R.string.dateViewFormat))
+            DateUtil.dateToString(diaryModel.date, resources.getString(R.string.dateViewFormat))
         etTitle.setText(diaryModel.title)
         etContent.setText(diaryModel.contents)
 
@@ -123,8 +124,8 @@ class DiaryActivity : BaseActivity<DiaryViewModel, ActivityDiaryBinding>() {
 
     private fun handleLoadingState(state: DiaryState.Loading) = with(binding) {
         when (state) {
-            is DiaryState.Loading.Start -> progressBar.visibility = View.VISIBLE
-            is DiaryState.Loading.End -> progressBar.visibility = View.GONE
+            is DiaryState.Loading.Start -> progressBar.visibility = true.toVisibility()
+            is DiaryState.Loading.End -> progressBar.visibility = false.toVisibility()
         }
     }
 
