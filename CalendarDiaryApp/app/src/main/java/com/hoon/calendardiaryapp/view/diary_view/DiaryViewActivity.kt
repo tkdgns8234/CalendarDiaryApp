@@ -3,10 +3,9 @@ package com.hoon.calendardiaryapp.view.diary_view
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.text.method.ScrollingMovementMethod
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.hoon.calendardiaryapp.BaseActivity
 import com.hoon.calendardiaryapp.R
@@ -18,7 +17,10 @@ import com.hoon.calendardiaryapp.view.diary.DiaryActivity
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 
-class DiaryViewActivity : BaseActivity<DiaryViewViewModel, ActivityDiaryViewBinding>() {
+
+class DiaryViewActivity : BaseActivity<DiaryViewViewModel, ActivityDiaryViewBinding>(
+    TransitionMode.VERTICAL
+) {
 
     override val viewModel by viewModel<DiaryViewViewModel>()
 
@@ -44,10 +46,12 @@ class DiaryViewActivity : BaseActivity<DiaryViewViewModel, ActivityDiaryViewBind
     override fun initViews() = with(binding) {
         setSupportActionBar(toolbar)
 
-        toolbar.title = DateUtil.dateToString(currentDate, resources.getString(R.string.dateViewFormat))
+        toolbar.title = DateUtil.dateToString(this@DiaryViewActivity, currentDate, resources.getString(R.string.dateViewFormat))
 
         btnDelete.setOnClickListener { showDialogForDeleteEvent() }
         btnCorrect.setOnClickListener { startDiaryActivity(DiaryActivity.DiaryMode.MODIFY) }
+
+        tvContent.movementMethod = ScrollingMovementMethod()
     }
 
     override fun observeData() {
@@ -66,8 +70,8 @@ class DiaryViewActivity : BaseActivity<DiaryViewViewModel, ActivityDiaryViewBind
             is DiaryViewState.GetDiaryContents.Success -> {
                 val model = state.diaryModel
                 with(binding) {
-                    etTitle.setText(model.title)
-                    etContent.setText(model.contents)
+                    tvTitle.setText(model.title)
+                    tvContent.setText(model.contents)
 
                     val imageURI = model.imageUri.toUri()
                     imageURI?.let {

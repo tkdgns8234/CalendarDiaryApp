@@ -180,7 +180,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
      */
     private val onDateClickListener: (date: Date) -> Unit = { date ->
         val pattern = resources.getString(R.string.dateViewFormat)
-        val dateString = DateUtil.dateToString(date, pattern)
+        val dateString = DateUtil.dateToString(this, date, pattern)
         binding.tvSelectedDate.text = dateString
 
         // 선택한 날짜에대한 diary 정보 load

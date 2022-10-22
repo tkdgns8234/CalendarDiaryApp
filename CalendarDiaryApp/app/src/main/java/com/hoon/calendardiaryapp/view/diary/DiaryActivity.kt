@@ -7,7 +7,6 @@ import android.net.Uri
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
@@ -23,7 +22,9 @@ import com.hoon.calendardiaryapp.util.DateUtil
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 
-class DiaryActivity : BaseActivity<DiaryViewModel, ActivityDiaryBinding>() {
+class DiaryActivity : BaseActivity<DiaryViewModel, ActivityDiaryBinding>(
+    TransitionMode.HORIZONTAL
+) {
 
     override val viewModel by viewModel<DiaryViewModel>()
 
@@ -71,7 +72,7 @@ class DiaryActivity : BaseActivity<DiaryViewModel, ActivityDiaryBinding>() {
         }
 
         val pattern = resources.getString(R.string.dateViewFormat)
-        val dateString = DateUtil.dateToString(currentDate, pattern)
+        val dateString = DateUtil.dateToString(this@DiaryActivity, currentDate, pattern)
         tvCurrentDate.text = dateString
 
         setSupportActionBar(toolbar)

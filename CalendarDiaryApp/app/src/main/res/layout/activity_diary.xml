@@ -30,7 +30,8 @@
         android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         tools:text="2022년 9월 15일 목요일" />
@@ -41,7 +42,7 @@
         android:layout_height="2dp"
         android:layout_marginHorizontal="15dp"
         android:layout_marginTop="7dp"
-        android:background="@color/blue_white"
+        android:background="@drawable/shape_outline_radius"
         app:layout_constraintTop_toBottomOf="@id/tv_current_date" />
 
     <EditText
@@ -49,7 +50,8 @@
         style="@style/font_bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="15dp"
         android:background="@null"
         android:hint="@string/title"
         android:textColorHint="@color/white"
@@ -66,7 +68,7 @@
         android:layout_height="2dp"
         android:layout_marginHorizontal="15dp"
         android:layout_marginTop="7dp"
-        android:background="@color/blue_white"
+        android:background="@drawable/shape_outline_radius"
         app:layout_constraintTop_toBottomOf="@id/et_title" />
 
     <ImageView
@@ -75,8 +77,7 @@
         android:layout_height="0dp"
         android:layout_marginHorizontal="15dp"
         android:layout_marginTop="15dp"
-        android:background="@drawable/shape_btn_corner_radius"
-        android:backgroundTint="@color/gray"
+        android:background="@drawable/shape_gallery_radius"
         app:layout_constraintDimensionRatio="2:0.8"
         app:layout_constraintTop_toBottomOf="@id/outline2" />
 

@@ -12,7 +12,9 @@ import com.hoon.calendardiaryapp.util.PreferenceManager
 import com.hoon.calendardiaryapp.view.main.MainViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class SettingsActivity : BaseActivity<BaseViewModel, ActivitySettingsBinding>() {
+class SettingsActivity : BaseActivity<BaseViewModel, ActivitySettingsBinding>(
+    TransitionMode.HORIZONTAL
+) {
 
     // this activity not used Viewmodel yet. (set BaseViewModel)
     override val viewModel by viewModel<BaseViewModel>()

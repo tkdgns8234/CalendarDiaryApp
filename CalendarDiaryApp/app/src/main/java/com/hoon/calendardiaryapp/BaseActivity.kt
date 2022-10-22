@@ -7,7 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.hoon.calendardiaryapp.util.LocaleHelper
 
-abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding> : AppCompatActivity() {
+abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding>(
+    private val transitionMode: TransitionMode = TransitionMode.NONE
+) : AppCompatActivity() {
 
     protected abstract val viewModel: VM
 
@@ -22,6 +24,7 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding> : AppCompatAct
         binding = getViewBinding()
         setContentView(binding.root)
         initState()
+        openAnimate()
     }
 
     open fun initState() {
@@ -46,5 +49,32 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding> : AppCompatAct
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(LocaleHelper.onAttach(base))
+    }
+
+    override fun finish() {
+        super.finish()
+        closeAnimate()
+    }
+
+    private fun openAnimate() {
+        when (transitionMode) {
+            TransitionMode.HORIZONTAL -> overridePendingTransition(R.anim.horizon_enter, R.anim.none)
+            TransitionMode.VERTICAL -> overridePendingTransition(R.anim.vertical_enter, R.anim.none)
+            TransitionMode.NONE -> Unit
+        }
+    }
+
+    private fun closeAnimate() {
+        when (transitionMode) {
+            TransitionMode.HORIZONTAL -> overridePendingTransition(R.anim.none, R.anim.horizon_exit)
+            TransitionMode.VERTICAL -> overridePendingTransition(R.anim.none, R.anim.vertical_exit)
+            TransitionMode.NONE -> Unit
+        }
+    }
+
+    enum class TransitionMode {
+        NONE,
+        HORIZONTAL,
+        VERTICAL
     }
 }

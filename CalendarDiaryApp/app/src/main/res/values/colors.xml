@@ -8,11 +8,11 @@
     <color name="black">#212121</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#a4a4a4</color>
-    <color name="gray_light">#efefef</color>
+    <color name="gray_light">#ABEFEFEF</color>
     <color name="green">#77AA40</color>
 
     <!-- https://material.io/resources/color/#!/?view.left=0&view.right=0&primary.color=3F51B5 -->
-    <color name="blue_primary">#2038B1</color>
+    <color name="blue_primary">#1565c0</color>
     <color name="blue_light">#E24C54BC</color>
     <color name="blue_white">#e3f2fd</color>
     <color name="blue_dark">#002984</color>
@@ -20,7 +20,7 @@
 
     <color name="calender_background_gray">#A3585A5A</color>
     <color name="calender_date_white">#DCDCDC</color>
-    <color name="calender_date_red">#E1FA1F49</color>
-    <color name="calender_date_blue">#1231CF</color>
+    <color name="calender_date_red">#E1DD1F43</color>
+    <color name="calender_date_blue">#0E4CAC</color>
 
 </resources>

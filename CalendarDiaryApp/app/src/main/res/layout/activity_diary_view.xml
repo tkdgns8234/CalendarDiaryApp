@@ -18,18 +18,16 @@
         app:titleTextAppearance="@style/toolbar_title_text"
         app:titleTextColor="@color/white" />
 
-    <EditText
-        android:id="@+id/et_title"
+    <TextView
+        android:id="@+id/tv_title"
         style="@style/font_bold"
-        android:textColorHint="@color/white"
         android:textColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="15dp"
         android:background="@null"
         android:ellipsize="end"
-        android:hint="@string/title"
-        android:inputType="text"
         android:maxLines="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
@@ -41,8 +39,8 @@
         android:layout_height="2dp"
         android:layout_marginHorizontal="15dp"
         android:layout_marginTop="7dp"
-        android:background="@color/blue_white"
-        app:layout_constraintTop_toBottomOf="@id/et_title" />
+        android:background="@drawable/shape_outline_radius"
+        app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
     <ImageView
         android:id="@+id/iv_diary_image"
@@ -50,25 +48,19 @@
         android:layout_height="0dp"
         android:layout_marginHorizontal="15dp"
         android:layout_marginTop="15dp"
-        android:background="@drawable/shape_btn_corner_radius"
+        android:background="@drawable/shape_gallery_radius"
         android:backgroundTint="@color/black"
         app:layout_constraintDimensionRatio="2:1"
         app:layout_constraintTop_toBottomOf="@id/outline2" />
 
-    <EditText
-        android:id="@+id/et_content"
+    <TextView
+        android:id="@+id/tv_content"
         style="@style/font_bold"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="15dp"
         android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        android:background="@null"
-        android:ellipsize="start"
-        android:gravity="start|top"
-        android:hint="@string/content"
         android:scrollbars="vertical"
-        android:inputType="textMultiLine"
         app:layout_constraintBottom_toTopOf="@id/btn_delete"
         app:layout_constraintTop_toBottomOf="@id/iv_diary_image" />
 
