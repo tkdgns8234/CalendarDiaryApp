@@ -40,8 +40,6 @@ class CalenderAdapter(
         val calendarMonth = calendarManager.calendar.get(Calendar.MONTH) + 1 // 1월 = 0
         val currentViewHolderMonth = calendarManager.days[position].getMonthString().toInt()
 
-        Log.e("test- 1", calendarMonth.toString())
-        Log.e("test- 2", currentViewHolderMonth.toString())
         if (calendarMonth == currentViewHolderMonth) {
             // 현재 표시되는 viewHolder 의 날짜가 이번 월인 경우 clickable
             holder.itemView.setOnClickListener {

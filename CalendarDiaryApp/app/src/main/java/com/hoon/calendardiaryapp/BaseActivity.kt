@@ -10,7 +10,7 @@ import com.hoon.calendardiaryapp.util.LocaleHelper
 abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding> : AppCompatActivity() {
     protected abstract val viewModel: VM
     protected val binding: VB by lazy { getViewBinding() }
-    private lateinit var initialLocale: String
+    lateinit var initialLocale: String
 
     abstract fun getViewBinding(): VB
 
@@ -26,6 +26,7 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding> : AppCompatAct
 
     override fun onResume() {
         super.onResume()
+
         if (initialLocale != LocaleHelper.LANGUAGE_SYSTEM
             && initialLocale != LocaleHelper.getPersistedLocale(this)
         ) {

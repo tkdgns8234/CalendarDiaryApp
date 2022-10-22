@@ -1,5 +1,6 @@
 package com.hoon.calendardiaryapp.view.main
 
+import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -18,7 +19,6 @@ import com.hoon.calendardiaryapp.view.diary_view.DiaryViewActivity
 import com.hoon.calendardiaryapp.view.settings.SettingsActivity
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
-
 
 class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
@@ -56,6 +56,20 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.resetMainState()
+    }
+
+    override fun onResume() {
+        adapter.getSelectedDate()?.let {
+            viewModel.getDiaryContents(it)
+            viewModel.getDiaryContentsInMonth(it)
+        }
+
+        super.onResume()
+    }
+
     private fun initViews() = with(binding) {
         setSupportActionBar(toolbar)
 
@@ -72,7 +86,11 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
             adapter.prevMonth()
         }
 
-        layoutDiary.setOnClickListener { startDiaryViewActivity() }
+        layoutDiary.setOnClickListener {
+            if (tvDiaryTitle.text.isNullOrEmpty().not()) {
+                startDiaryViewActivity()
+            }
+        }
 
         btnRegisterDiary.setOnClickListener { startDiaryActivity(DiaryActivity.DiaryMode.NEW_REGISTER) }
     }

@@ -16,7 +16,7 @@ class MainViewModel(
     private val databaseRepository: DatabaseRepository
 ) : BaseViewModel() {
 
-    private val _mainStateLiveData = MutableLiveData<MainState>(MainState.UnInitialized)
+    private val _mainStateLiveData = MutableLiveData<MainState>()
     val mainStateLiveData: LiveData<MainState> get() = _mainStateLiveData
 
     fun getHolidaysFromYear(date: Date) = viewModelScope.launch {
@@ -43,7 +43,6 @@ class MainViewModel(
 
     fun getDiaryContents(date: Date) = viewModelScope.launch {
         val diaryModel = databaseRepository.getDiaryContents(date)
-        Log.e("tag", diaryModel.toString())
         if (diaryModel != null) {
             setState(MainState.GetDiaryContents.Success(diaryModel))
         } else {
@@ -56,6 +55,10 @@ class MainViewModel(
         diaryList?.let {
             setState(MainState.UpdateDiaryWrittenList(it))
         }
+    }
+
+    fun resetMainState() {
+        setState(MainState.UnInitialized)
     }
 
     private fun setState(state: MainState) {
