@@ -20,28 +20,28 @@ import java.util.*
 
 class DiaryViewActivity : BaseActivity<DiaryViewViewModel, ActivityDiaryViewBinding>() {
 
+    override val viewModel by viewModel<DiaryViewViewModel>()
+
     override fun getViewBinding() =
         ActivityDiaryViewBinding.inflate(layoutInflater)
 
-    override val viewModel by viewModel<DiaryViewViewModel>()
+    companion object {
+        const val INTENT_KEY_DATE = "Date"
+
+        fun newIntent(context: Context, date: Date) =
+            Intent(context, DiaryViewActivity::class.java).apply {
+                putExtra(INTENT_KEY_DATE, date)
+            }
+    }
 
     private val currentDate by lazy { intent.getSerializableExtra(INTENT_KEY_DATE) as Date }
 
-    override fun observeData() {
-        viewModel.diaryViewStateLiveData.observe(this) {
-            when (it) {
-                is DiaryViewState.UnInitialized -> {
-                    initViews()
-                    viewModel.fetchData(currentDate)
-                }
-                is DiaryViewState.UpdateDiaryContents -> {
-                    handleUpdateDiaryContents(it)
-                }
-            }
-        }
+    override fun initState() {
+        super.initState()
+        viewModel.fetchData(currentDate)
     }
 
-    private fun initViews() = with(binding) {
+    override fun initViews() = with(binding) {
         setSupportActionBar(toolbar)
 
         toolbar.title = DateUtil.formatDate(currentDate, DATE_STRING_PATTERN)
@@ -50,9 +50,20 @@ class DiaryViewActivity : BaseActivity<DiaryViewViewModel, ActivityDiaryViewBind
         btnCorrect.setOnClickListener { startDiaryActivity(DiaryActivity.DiaryMode.MODIFY) }
     }
 
-    private fun handleUpdateDiaryContents(state: DiaryViewState.UpdateDiaryContents) {
+    override fun observeData() {
+        viewModel.diaryViewStateLiveData.observe(this) {
+            when (it) {
+                is DiaryViewState.GetDiaryContents -> {
+                    handleGetDiaryContents(it)
+                }
+                else -> {}
+            }
+        }
+    }
+
+    private fun handleGetDiaryContents(state: DiaryViewState.GetDiaryContents) {
         when (state) {
-            is DiaryViewState.UpdateDiaryContents.Success -> {
+            is DiaryViewState.GetDiaryContents.Success -> {
                 val model = state.diaryModel
                 with(binding) {
                     etTitle.setText(model.title)
@@ -67,7 +78,7 @@ class DiaryViewActivity : BaseActivity<DiaryViewViewModel, ActivityDiaryViewBind
                     }
                 }
             }
-            is DiaryViewState.UpdateDiaryContents.Fail -> {
+            is DiaryViewState.GetDiaryContents.Fail -> {
                 toast(resources.getString(R.string.failed_to_load_diary))
             }
         }
@@ -98,7 +109,7 @@ class DiaryViewActivity : BaseActivity<DiaryViewViewModel, ActivityDiaryViewBind
         AlertDialog.Builder(this)
             .setMessage(msg)
             .setPositiveButton(deleteString) { _, _ ->
-                viewModel.deleteDiaryInfo(currentDate)
+                viewModel.deleteDiaryContent(currentDate)
                 finish()
             }.setNegativeButton(cancelString) { _, _ -> }
             .create()
@@ -109,14 +120,5 @@ class DiaryViewActivity : BaseActivity<DiaryViewViewModel, ActivityDiaryViewBind
         val intent = DiaryActivity.newIntent(this, mode, currentDate)
         startActivity(intent)
         finish()
-    }
-
-    companion object {
-        const val INTENT_KEY_DATE = "Date"
-
-        fun newIntent(context: Context, date: Date) =
-            Intent(context, DiaryViewActivity::class.java).apply {
-                putExtra(INTENT_KEY_DATE, date)
-            }
     }
 }

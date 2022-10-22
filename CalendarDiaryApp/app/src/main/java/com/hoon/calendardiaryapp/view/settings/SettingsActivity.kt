@@ -19,11 +19,9 @@ class SettingsActivity : BaseActivity<BaseViewModel, ActivitySettingsBinding>() 
 
     override fun getViewBinding() = ActivitySettingsBinding.inflate(layoutInflater)
 
-    override fun observeData() {
-        initViews()
-    }
+    override fun observeData() {}
 
-    private fun initViews() = with(binding) {
+    override fun initViews() = with(binding) {
         toolbar.setNavigationOnClickListener {
             finish()
         }

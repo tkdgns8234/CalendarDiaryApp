@@ -22,55 +22,20 @@ import java.util.*
 
 class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
+    override val viewModel by viewModel<MainViewModel>()
+
     override fun getViewBinding() =
         ActivityMainBinding.inflate(layoutInflater)
 
-    override val viewModel by viewModel<MainViewModel>()
+    companion object {
+        const val TAG = "MainActivity"
+    }
 
     private lateinit var adapter: CalenderAdapter
     private var currentYear: String? = null
     private var currentMonth: String? = null
 
-    override fun observeData() {
-        viewModel.mainStateLiveData.observe(this) {
-            when (it) {
-                is MainState.UnInitialized -> {
-                    initViews()
-                }
-                is MainState.GetHolidaysFromYear -> {
-                    handleGetHolidaysFromYearState(it)
-                }
-                is MainState.GetDiaryContents -> {
-                    handleGetDiaryContentsState(it)
-                }
-                is MainState.UpdateDiaryWrittenList -> {
-                    handleUpdateDiaryWrittenList(it.list)
-                }
-                is MainState.Loading -> {
-                    handleLoadingState(it)
-                }
-                is MainState.Error -> {
-                    handleErrorState(it.message)
-                }
-            }
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.resetMainState()
-    }
-
-    override fun onResume() {
-        adapter.getSelectedDate()?.let {
-            viewModel.getDiaryContents(it)
-            viewModel.getDiaryContentsInMonth(it)
-        }
-
-        super.onResume()
-    }
-
-    private fun initViews() = with(binding) {
+    override fun initViews() = with(binding) {
         setSupportActionBar(toolbar)
 
         adapter = CalenderAdapter(onDateClickListener, updateUIListener)
@@ -95,7 +60,42 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         btnRegisterDiary.setOnClickListener { startDiaryActivity(DiaryActivity.DiaryMode.NEW_REGISTER) }
     }
 
-    private fun handleGetHolidaysFromYearState(state: MainState.GetHolidaysFromYear) {
+    override fun observeData() {
+        viewModel.mainStateLiveData.observe(this) {
+            when (it) {
+                is MainState.GetHolidaysFromYear -> {
+                    // Holiday update
+                    handleGetHolidaysFromYear(it)
+                }
+                is MainState.GetDiaryContents -> {
+                    // Main UI 하단의 diary 내용 update
+                    handleGetDiaryContentsState(it)
+                }
+                is MainState.UpdateDiaryWrittenList -> {
+                    // 캘린더에 다이어리 작성된 날짜 점 찍기
+                    handleUpdateDiaryWrittenList(it.list)
+                }
+                is MainState.Loading -> {
+                    handleLoadingState(it)
+                }
+                is MainState.Error -> {
+                    handleErrorState(it.message)
+                }
+                else -> {}
+            }
+        }
+    }
+
+    override fun onResume() {
+        adapter.getSelectedDate()?.let {
+            viewModel.getDiaryContents(it)
+            viewModel.getDiaryContentsInMonth(it)
+        }
+
+        super.onResume()
+    }
+
+    private fun handleGetHolidaysFromYear(state: MainState.GetHolidaysFromYear) {
         when (state) {
             is MainState.GetHolidaysFromYear.Success -> {
                 val holidayModels = state.list
@@ -140,8 +140,8 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
     private fun handleLoadingState(state: MainState.Loading) = with(binding) {
         when (state) {
-            is MainState.Loading.Start -> progressBar.visibility = View.VISIBLE
-            is MainState.Loading.End -> progressBar.visibility = View.GONE
+            is MainState.Loading.Start -> progressBar.visibility = true.toVisibility()
+            is MainState.Loading.End -> progressBar.visibility = false.toVisibility()
         }
     }
 
@@ -218,9 +218,5 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
                 DiaryViewActivity.newIntent(this@MainActivity, date)
             startActivity(intent)
         }
-    }
-
-    companion object {
-        const val TAG = "MainActivity"
     }
 }

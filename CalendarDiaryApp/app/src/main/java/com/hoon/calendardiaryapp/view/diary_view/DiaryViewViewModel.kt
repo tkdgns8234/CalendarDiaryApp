@@ -12,6 +12,7 @@ import java.util.*
 class DiaryViewViewModel(
     private val databaseRepository: DatabaseRepository
 ) : BaseViewModel() {
+
     private val _diaryViewStateLiveData = MutableLiveData<DiaryViewState>(DiaryViewState.UnInitialized)
     val diaryViewStateLiveData: LiveData<DiaryViewState> get() = _diaryViewStateLiveData
 
@@ -19,13 +20,13 @@ class DiaryViewViewModel(
         val diaryModel = databaseRepository.getDiaryContents(date)
 
         if (diaryModel != null) {
-            setState(DiaryViewState.UpdateDiaryContents.Success(diaryModel))
+            setState(DiaryViewState.GetDiaryContents.Success(diaryModel))
         } else {
-            setState(DiaryViewState.UpdateDiaryContents.Fail)
+            setState(DiaryViewState.GetDiaryContents.Fail)
         }
     }
 
-    fun deleteDiaryInfo(date: Date) = GlobalScope.launch {
+    fun deleteDiaryContent(date: Date) = GlobalScope.launch {
         val diaryModel = databaseRepository.getDiaryContents(date)
         diaryModel?.let {
             databaseRepository.deleteDiaryContents(it)
@@ -34,9 +35,5 @@ class DiaryViewViewModel(
 
     private fun setState(state: DiaryViewState) {
         _diaryViewStateLiveData.value = state
-    }
-
-    companion object {
-        const val TAG = "MainViewModel"
     }
 }

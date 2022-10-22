@@ -8,19 +8,29 @@ import androidx.viewbinding.ViewBinding
 import com.hoon.calendardiaryapp.util.LocaleHelper
 
 abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding> : AppCompatActivity() {
+
     protected abstract val viewModel: VM
-    protected val binding: VB by lazy { getViewBinding() }
-    lateinit var initialLocale: String
+
+    protected lateinit var binding: VB
 
     abstract fun getViewBinding(): VB
 
+    private lateinit var initialLocale: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = getViewBinding()
         setContentView(binding.root)
+        initState()
+    }
 
+    open fun initState() {
+        initViews()
         observeData()
         initialLocale = LocaleHelper.getPersistedLocale(this)
     }
+
+    open fun initViews() = Unit
 
     abstract fun observeData()
 

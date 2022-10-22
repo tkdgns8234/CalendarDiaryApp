@@ -23,49 +23,39 @@ import java.util.*
 
 class DiaryActivity : BaseActivity<DiaryViewModel, ActivityDiaryBinding>() {
 
+    override val viewModel by viewModel<DiaryViewModel>()
+
     override fun getViewBinding() =
         ActivityDiaryBinding.inflate(layoutInflater)
 
-    override val viewModel by viewModel<DiaryViewModel>()
+    enum class DiaryMode {
+        NEW_REGISTER,
+        MODIFY
+    }
+
+    companion object {
+        const val TAG = "DiaryActivity"
+        const val INTENT_KEY_MODE = "Mode"
+        const val INTENT_KEY_DATE = "Date"
+
+        fun newIntent(context: Context, mode: DiaryMode, date: Date) =
+            Intent(context, DiaryActivity::class.java).apply {
+                putExtra(INTENT_KEY_MODE, mode)
+                putExtra(INTENT_KEY_DATE, date)
+            }
+    }
 
     private val diaryMode by lazy { intent.getSerializableExtra(INTENT_KEY_MODE) as DiaryMode }
     private val currentDate by lazy { intent.getSerializableExtra(INTENT_KEY_DATE) as Date }
     private var imageURI: Uri? = null
 
-    override fun observeData() {
-        viewModel.diaryStateLiveData.observe(this) {
-            when (it) {
-                is DiaryState.UnInitialized -> {
-                    initViews()
-                    bindVies()
-                    viewModel.fetchData(currentDate)
-                }
-                is DiaryState.Success.FetchData -> {
-                    handleSuccessFetchData(it.diaryModel)
-                }
-                is DiaryState.Loading -> {
-                    handleLoadingState(it)
-                }
-            }
-        }
+    override fun initState() {
+        super.initState()
+        bindVies()
+        viewModel.fetchData(currentDate)
     }
 
-    private fun handleSuccessFetchData(diaryModel: DiaryModel) = with(binding) {
-        tvCurrentDate.text =
-            DateUtil.formatDate(diaryModel.date, resources.getString(R.string.dateViewFormat))
-        etTitle.setText(diaryModel.title)
-        etContent.setText(diaryModel.contents)
-
-        imageURI = diaryModel.imageUri.toUri()
-        imageURI?.let {
-            ivDiaryImage.setImageWithGlide(this@DiaryActivity, it) {
-                binding.tvGallery.visibility = View.GONE
-                binding.ivGalleryIcon.visibility = View.GONE
-            }
-        }
-    }
-
-    private fun initViews() = with(binding) {
+    override fun initViews() = with(binding) {
         when (diaryMode) {
             DiaryMode.MODIFY -> {
                 toolbar.title = resources.getString(R.string.title_edit_diary)
@@ -102,17 +92,56 @@ class DiaryActivity : BaseActivity<DiaryViewModel, ActivityDiaryBinding>() {
         }
     }
 
-    private fun btnStateChange() = with(binding) {
-        btnSave.isEnabled =
-            !etTitle.text.isNullOrEmpty() &&
-                    !etContent.text.isNullOrEmpty() &&
-                    imageURI != null
+    override fun observeData() {
+        viewModel.diaryStateLiveData.observe(this) {
+            when (it) {
+                is DiaryState.Success.FetchData -> {
+                    handleSuccessFetchData(it.diaryModel)
+                }
+                is DiaryState.Loading -> {
+                    handleLoadingState(it)
+                }
+                else -> {}
+            }
+        }
+    }
+
+    private fun handleSuccessFetchData(diaryModel: DiaryModel) = with(binding) {
+        tvCurrentDate.text =
+            DateUtil.formatDate(diaryModel.date, resources.getString(R.string.dateViewFormat))
+        etTitle.setText(diaryModel.title)
+        etContent.setText(diaryModel.contents)
+
+        imageURI = diaryModel.imageUri.toUri()
+        imageURI?.let {
+            ivDiaryImage.setImageWithGlide(this@DiaryActivity, it) {
+                binding.tvGallery.visibility = View.GONE
+                binding.ivGalleryIcon.visibility = View.GONE
+            }
+        }
     }
 
     private fun handleLoadingState(state: DiaryState.Loading) = with(binding) {
         when (state) {
             is DiaryState.Loading.Start -> progressBar.visibility = View.VISIBLE
             is DiaryState.Loading.End -> progressBar.visibility = View.GONE
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar_diary, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item?.itemId) {
+            R.id.menu_close -> {
+                showDialogForCloseEvent()
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
         }
     }
 
@@ -144,21 +173,11 @@ class DiaryActivity : BaseActivity<DiaryViewModel, ActivityDiaryBinding>() {
             }
         }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_toolbar_diary, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item?.itemId) {
-            R.id.menu_close -> {
-                showDialogForCloseEvent()
-                true
-            }
-            else -> {
-                super.onOptionsItemSelected(item)
-            }
-        }
+    private fun btnStateChange() = with(binding) {
+        btnSave.isEnabled =
+            !etTitle.text.isNullOrEmpty() &&
+                    !etContent.text.isNullOrEmpty() &&
+                    imageURI != null
     }
 
     private fun showDialogForCloseEvent() {
@@ -173,22 +192,5 @@ class DiaryActivity : BaseActivity<DiaryViewModel, ActivityDiaryBinding>() {
             }.setNegativeButton(no) { _, _ -> }
             .create()
             .show()
-    }
-
-    companion object {
-        const val TAG = "DiaryActivity"
-        const val INTENT_KEY_MODE = "Mode"
-        const val INTENT_KEY_DATE = "Date"
-
-        fun newIntent(context: Context, mode: DiaryMode, date: Date) =
-            Intent(context, DiaryActivity::class.java).apply {
-                putExtra(INTENT_KEY_MODE, mode)
-                putExtra(INTENT_KEY_DATE, date)
-            }
-    }
-
-    enum class DiaryMode {
-        NEW_REGISTER,
-        MODIFY
     }
 }

@@ -14,6 +14,7 @@ import java.util.*
 class DiaryViewModel(
     private val databaseRepository: DatabaseRepository
 ) : BaseViewModel() {
+
     private val _diaryStateLiveData = MutableLiveData<DiaryState>(DiaryState.UnInitialized)
     val diaryStateLiveData: LiveData<DiaryState> get() = _diaryStateLiveData
 

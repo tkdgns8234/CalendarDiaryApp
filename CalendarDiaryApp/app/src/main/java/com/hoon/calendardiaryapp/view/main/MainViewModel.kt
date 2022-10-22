@@ -1,6 +1,5 @@
 package com.hoon.calendardiaryapp.view.main
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -43,6 +42,7 @@ class MainViewModel(
 
     fun getDiaryContents(date: Date) = viewModelScope.launch {
         val diaryModel = databaseRepository.getDiaryContents(date)
+
         if (diaryModel != null) {
             setState(MainState.GetDiaryContents.Success(diaryModel))
         } else {

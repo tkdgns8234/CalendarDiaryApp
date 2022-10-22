@@ -1,6 +1,5 @@
 package com.hoon.calendardiaryapp.view.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -74,6 +73,10 @@ class CalenderAdapter(
         refreshView(calendarManager.calendar) // update holidays and other will stay the same
     }
 
+    /**
+     * 캘린더에 다이어리 작성된 날짜 점 찍기
+     * @param list : 현재 Month 의 다이어리 작성된 날짜 list
+     */
     fun updateDiaryWrittenList(list: List<DiaryModel>) {
         this.diaryWrittenList = list.map {
             DateUtil.formatDate(it.date, DATE_STRING_PATTERN)
