@@ -4,19 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".view.diary_view.DiaryViewActivity">
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/gallery_default_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="iv_gallery_icon,tv_gallery"/>
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/blue_primary"
+        android:background="@color/black"
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/menu_toolbar_diary"
         app:title="date"
@@ -26,6 +21,8 @@
     <EditText
         android:id="@+id/et_title"
         style="@style/font_bold"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
@@ -53,31 +50,10 @@
         android:layout_height="0dp"
         android:layout_marginHorizontal="15dp"
         android:layout_marginTop="15dp"
-        android:background="@color/gray_light"
+        android:background="@drawable/shape_btn_corner_radius"
+        android:backgroundTint="@color/black"
         app:layout_constraintDimensionRatio="2:1"
         app:layout_constraintTop_toBottomOf="@id/outline2" />
-
-    <ImageView
-        android:id="@+id/iv_gallery_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/ic_baseline_gallery_24"
-        app:layout_constraintBottom_toBottomOf="@id/iv_diary_image"
-        app:layout_constraintEnd_toEndOf="@id/iv_diary_image"
-        app:layout_constraintStart_toStartOf="@id/iv_diary_image"
-        app:layout_constraintTop_toTopOf="@id/iv_diary_image"
-        app:layout_constraintVertical_bias="0.4" />
-
-    <TextView
-        android:id="@+id/tv_gallery"
-        style="@style/font_bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
-        android:text="사진을 선택해주세요"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_gallery_icon" />
 
     <EditText
         android:id="@+id/et_content"
@@ -85,6 +61,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="15dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
         android:background="@null"
         android:ellipsize="start"
         android:gravity="start|top"
@@ -100,7 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp"
-        android:background="@color/green"
+        android:background="@drawable/shape_btn_corner_radius"
         android:text="@string/edit"
         android:textColor="@color/white"
         android:textSize="17sp"
@@ -112,7 +90,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
-        android:background="@color/green"
+        android:background="@drawable/shape_btn_corner_radius"
         android:text="@string/delete"
         android:textColor="@color/white"
         android:textSize="17sp"

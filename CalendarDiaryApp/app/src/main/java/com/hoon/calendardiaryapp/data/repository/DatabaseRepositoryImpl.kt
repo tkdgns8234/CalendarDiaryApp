@@ -2,7 +2,7 @@ package com.hoon.calendardiaryapp.data.repository
 
 import com.hoon.calendardiaryapp.data.database.diary.DiaryDao
 import com.hoon.calendardiaryapp.data.database.holiday.HolidayDao
-import com.hoon.calendardiaryapp.data.database.YearEntity
+import com.hoon.calendardiaryapp.data.database.holiday.YearEntity
 import com.hoon.calendardiaryapp.data.model.DiaryModel
 import com.hoon.calendardiaryapp.data.model.HolidayModel
 import com.hoon.calendardiaryapp.extensions.getYearString

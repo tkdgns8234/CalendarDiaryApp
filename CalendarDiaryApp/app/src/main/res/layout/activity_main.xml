@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".view.main.MainActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/blue_primary"
+        android:background="@color/black"
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/menu_toolbar_main"
         app:title="@string/title_my_photo_diary"
@@ -20,9 +21,10 @@
     <TextView
         android:id="@+id/tv_year"
         style="@style/font_bold"
+        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,6 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="35sp"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@id/tv_year"
         app:layout_constraintStart_toStartOf="@id/tv_year"
         app:layout_constraintTop_toBottomOf="@id/tv_year"
@@ -62,7 +65,7 @@
 
     <LinearLayout
         android:id="@+id/layoutDayOfWeek"
-        android:layout_width="350dp"
+        android:layout_width="315dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -83,7 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/monday"
-            android:textColor="@color/black" />
+            android:textColor="@color/white" />
 
         <TextView
             style="@style/calender_text"
@@ -91,7 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/tuesday"
-            android:textColor="@color/black" />
+            android:textColor="@color/white" />
 
         <TextView
             style="@style/calender_text"
@@ -99,7 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/wednesday"
-            android:textColor="@color/black" />
+            android:textColor="@color/white" />
 
         <TextView
             style="@style/calender_text"
@@ -107,7 +110,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/thursday"
-            android:textColor="@color/black" />
+            android:textColor="@color/white" />
 
         <TextView
             style="@style/calender_text"
@@ -115,7 +118,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/friday"
-            android:textColor="@color/black" />
+            android:textColor="@color/white" />
 
         <TextView
             style="@style/calender_text"
@@ -123,13 +126,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/saturday"
-            android:textColor="@color/blue_dark" />
+            android:textColor="@color/blue_primary" />
 
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_calender"
-        android:layout_width="350dp"
+        android:layout_width="315dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -138,17 +141,19 @@
     <View
         android:id="@+id/outline"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/blue_white"
+        android:layout_height="7dp"
+        android:layout_marginTop="13dp"
+        android:background="@color/white"
         app:layout_constraintTop_toBottomOf="@id/rv_calender" />
 
     <TextView
         android:id="@+id/tv_selected_date"
         style="@style/font_bold"
+        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="7dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/outline"
         tools:text="2022년 9월 20일 화요일" />
@@ -165,7 +170,8 @@
         android:id="@+id/layout_diary"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="15dp"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -176,7 +182,7 @@
             style="@style/font_bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/blue_light"
+            android:background="@drawable/shape_btn_corner_radius"
             android:drawableStart="@drawable/ic_baseline_add_24"
             android:drawablePadding="10dp"
             android:padding="10dp"
@@ -193,6 +199,7 @@
         <TextView
             android:id="@+id/tv_diary_title"
             style="@style/font_bold"
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
@@ -213,6 +220,9 @@
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/blue_primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

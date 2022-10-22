@@ -130,13 +130,13 @@ class CalenderAdapter(
                 holidays != null && holidays!!.contains(currentViewHolderDateString)
 
             if (currentViewHolderMonth != calendarMonth) {  // 이전,다음 월 날짜인 경우 토, 일, 공휴일 상관없이 회색 처리
-                tvDay.setColor(root.context, R.color.calender_date_gray)
+                tvDay.setColor(root.context, R.color.calender_date_white)
             } else if (isSunday || isHoliday) {
                 tvDay.setColor(root.context, R.color.calender_date_red)
             } else if (isSaturday) {
                 tvDay.setColor(root.context, R.color.calender_date_blue)
             } else {
-                tvDay.setColor(root.context, R.color.calender_date_gray)
+                tvDay.setColor(root.context, R.color.calender_date_white)
             }
 
             if (currentViewHolderMonth == calendarMonth) {

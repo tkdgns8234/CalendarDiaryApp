@@ -1,8 +1,8 @@
 package com.hoon.calendardiaryapp.extensions
 
 import com.hoon.calendardiaryapp.data.api.response.HolidayResponseItem
-import com.hoon.calendardiaryapp.data.database.DayEntity
 import com.hoon.calendardiaryapp.data.database.diary.DiaryEntity
+import com.hoon.calendardiaryapp.data.database.holiday.DayEntity
 import com.hoon.calendardiaryapp.data.model.DiaryModel
 import com.hoon.calendardiaryapp.data.model.HolidayModel
 import com.hoon.calendardiaryapp.util.Constants.DATE_STRING_PATTERN

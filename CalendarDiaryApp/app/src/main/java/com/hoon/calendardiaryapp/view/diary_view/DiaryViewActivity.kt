@@ -6,6 +6,7 @@ import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.hoon.calendardiaryapp.BaseActivity
 import com.hoon.calendardiaryapp.R
@@ -70,10 +71,7 @@ class DiaryViewActivity : BaseActivity<DiaryViewViewModel, ActivityDiaryViewBind
 
                     val imageURI = model.imageUri.toUri()
                     imageURI?.let {
-                        ivDiaryImage.setImageWithGlide(this@DiaryViewActivity, it) {
-                            binding.tvGallery.visibility = View.GONE
-                            binding.ivGalleryIcon.visibility = View.GONE
-                        }
+                        ivDiaryImage.setImageWithGlide(this@DiaryViewActivity, it)
                     }
                 }
             }

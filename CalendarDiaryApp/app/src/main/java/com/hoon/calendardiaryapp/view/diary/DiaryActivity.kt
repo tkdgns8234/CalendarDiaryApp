@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.widget.addTextChangedListener
 import com.hoon.calendardiaryapp.BaseActivity
@@ -116,8 +117,11 @@ class DiaryActivity : BaseActivity<DiaryViewModel, ActivityDiaryBinding>() {
         imageURI = diaryModel.imageUri.toUri()
         imageURI?.let {
             ivDiaryImage.setImageWithGlide(this@DiaryActivity, it) {
-                binding.tvGallery.visibility = View.GONE
-                binding.ivGalleryIcon.visibility = View.GONE
+                binding.tvGallery.visibility = false.toVisibility()
+                binding.ivGalleryIcon.visibility = false.toVisibility()
+
+                ivDiaryImage.setBackgroundColor(ContextCompat.getColor(
+                    this@DiaryActivity, R.color.black))
             }
         }
     }
@@ -162,8 +166,11 @@ class DiaryActivity : BaseActivity<DiaryViewModel, ActivityDiaryBinding>() {
                     binding.ivDiaryImage.setImageWithGlide(this, it) {
                         btnStateChange()
 
-                        binding.tvGallery.visibility = View.GONE
-                        binding.ivGalleryIcon.visibility = View.GONE
+                        binding.tvGallery.visibility = false.toVisibility()
+                        binding.ivGalleryIcon.visibility = false.toVisibility()
+
+                        binding.ivDiaryImage.setBackgroundColor(ContextCompat.getColor(
+                            this@DiaryActivity, R.color.black))
                     }
                 }
 

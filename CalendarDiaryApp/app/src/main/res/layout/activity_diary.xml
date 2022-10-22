@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".view.diary.DiaryActivity">
 
     <androidx.constraintlayout.widget.Group
@@ -16,7 +17,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/blue_primary"
+        android:background="@color/black"
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/menu_toolbar_diary"
         app:title="@string/title_register_new_diary"
@@ -26,7 +27,7 @@
     <TextView
         android:id="@+id/tv_current_date"
         style="@style/font_bold"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
@@ -51,6 +52,8 @@
         android:layout_margin="15dp"
         android:background="@null"
         android:hint="@string/title"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
         android:inputType="text"
         android:maxLines="1"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,7 +75,8 @@
         android:layout_height="0dp"
         android:layout_marginHorizontal="15dp"
         android:layout_marginTop="15dp"
-        android:background="@color/gray_light"
+        android:background="@drawable/shape_btn_corner_radius"
+        android:backgroundTint="@color/gray"
         app:layout_constraintDimensionRatio="2:0.8"
         app:layout_constraintTop_toBottomOf="@id/outline2" />
 
@@ -80,6 +84,7 @@
         android:id="@+id/iv_gallery_icon"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        app:tint="@color/white"
         android:src="@drawable/ic_baseline_gallery_24"
         app:layout_constraintBottom_toBottomOf="@id/iv_diary_image"
         app:layout_constraintEnd_toEndOf="@id/iv_diary_image"
@@ -90,6 +95,7 @@
     <TextView
         android:id="@+id/tv_gallery"
         style="@style/font_bold"
+        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
@@ -106,6 +112,8 @@
         android:layout_margin="15dp"
         android:background="@null"
         android:ellipsize="start"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
         android:gravity="start|top"
         android:hint="@string/content"
         android:scrollbars="vertical"
@@ -129,6 +137,9 @@
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/blue_primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
