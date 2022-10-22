@@ -31,7 +31,7 @@ object LocaleHelper {
      * Set the app's locale to the one specified by the given String.
      */
     fun setLocale(context: Context, localeSpec: String?, action: ((language: String) -> Unit)?): Context {
-        val locale: Locale = if (localeSpec == LANGUAGE_SYSTEM) {
+        var locale: Locale = if (localeSpec == LANGUAGE_SYSTEM) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 Resources.getSystem().configuration.locales[0]
             } else {
@@ -39,6 +39,11 @@ object LocaleHelper {
             }
         } else {
             Locale(localeSpec)
+        }
+
+        // 한국어, 영어 외의 언어는 English 로 설정
+        if (locale.language != LANGUAGE_KOREAN && locale.language != LANGUAGE_ENGLISH) {
+            locale = Locale(LANGUAGE_ENGLISH)
         }
 
         action?.let {
