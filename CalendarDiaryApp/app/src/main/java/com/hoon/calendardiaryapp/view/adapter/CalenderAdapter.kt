@@ -13,6 +13,7 @@ import com.hoon.calendardiaryapp.util.DateUtil
 import java.util.*
 
 class CalenderAdapter(
+    private val itemWidth: Int,
     private val onDateClickCallback: (Date) -> Unit,
     private val updateUICallback: (Date) -> Unit
 ) : RecyclerView.Adapter<CalenderAdapter.ViewHolder>() {
@@ -26,12 +27,18 @@ class CalenderAdapter(
         calendarManager.initCalendarManager { refreshView(it) }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        ViewHolder(
-            ItemCalenderBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
-            )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = ItemCalenderBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
         )
+
+        val params = view.root.layoutParams
+        params.height = itemWidth
+        params.width = itemWidth
+        view.root.layoutParams = params
+
+        return ViewHolder(view)
+    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position)

@@ -1,8 +1,11 @@
 package com.hoon.calendardiaryapp.view.main
 
+import android.content.Context
+import android.graphics.Point
+import android.os.Build
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
+import android.view.WindowManager
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.GridLayoutManager
 import com.hoon.calendardiaryapp.BaseActivity
@@ -37,7 +40,8 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
     override fun initViews() = with(binding) {
         setSupportActionBar(toolbar)
 
-        adapter = CalenderAdapter(onDateClickListener, updateUIListener)
+        val itemWidth = (getDeviceWidth() * 0.8 / 7).toInt()
+        adapter = CalenderAdapter(itemWidth, onDateClickListener, updateUIListener)
         rvCalender.layoutManager =
             GridLayoutManager(this@MainActivity, CalendarManager.DAYS_OF_WEEK)
         rvCalender.adapter = adapter
@@ -224,6 +228,19 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
             val intent =
                 DiaryViewActivity.newIntent(this@MainActivity, date)
             startActivity(intent)
+        }
+    }
+
+    private fun getDeviceWidth(): Int {
+        val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+
+        return if (Build.VERSION.SDK_INT >= 30) {
+            windowManager.currentWindowMetrics.bounds.width()
+        } else {
+            val display = windowManager.defaultDisplay
+            val size = Point()
+            display.getSize(size)
+            size.x
         }
     }
 }
