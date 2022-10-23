@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
 import androidx.core.net.toUri
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.hoon.calendardiaryapp.BaseActivity
 import com.hoon.calendardiaryapp.R
@@ -174,6 +175,10 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
                 currentMonth = month
                 // 월이 바뀌는 경우 일기가 쓰여있는 날짜 update
                 viewModel.getDiaryContentsInMonth(date)
+            }
+
+            if (progressBar.isVisible) {
+                progressBar.visibility = false.toVisibility()
             }
         }
     }
