@@ -8,7 +8,7 @@ import androidx.viewbinding.ViewBinding
 import com.hoon.calendardiaryapp.util.LocaleHelper
 
 abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding>(
-    private val transitionMode: TransitionMode = TransitionMode.NONE
+    private val transitionMode: TransitionMode = TransitionMode.NONE // layout animation mode
 ) : AppCompatActivity() {
 
     protected abstract val viewModel: VM

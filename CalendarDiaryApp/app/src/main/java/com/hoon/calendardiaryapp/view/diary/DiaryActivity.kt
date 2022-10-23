@@ -80,8 +80,8 @@ class DiaryActivity : BaseActivity<DiaryViewModel, ActivityDiaryBinding>(
 
     private fun bindVies() = with(binding) {
         ivDiaryImage.setOnClickListener { loadImage() }
-        etTitle.addTextChangedListener { btnStateChange() }
-        etContent.addTextChangedListener { btnStateChange() }
+        etTitle.addTextChangedListener { saveBtnStateChange() }
+        etContent.addTextChangedListener { saveBtnStateChange() }
         btnSave.setOnClickListener {
             viewModel.insertDiaryDataInDB(
                 DiaryModel(
@@ -165,7 +165,7 @@ class DiaryActivity : BaseActivity<DiaryViewModel, ActivityDiaryBinding>(
                     contentResolver.takePersistableUriPermission(it, Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
                     binding.ivDiaryImage.setImageWithGlide(this, it) {
-                        btnStateChange()
+                        saveBtnStateChange()
 
                         binding.tvGallery.visibility = false.toVisibility()
                         binding.ivGalleryIcon.visibility = false.toVisibility()
@@ -182,7 +182,7 @@ class DiaryActivity : BaseActivity<DiaryViewModel, ActivityDiaryBinding>(
             }
         }
 
-    private fun btnStateChange() = with(binding) {
+    private fun saveBtnStateChange() = with(binding) {
         btnSave.isEnabled =
             !etTitle.text.isNullOrEmpty() &&
                     !etContent.text.isNullOrEmpty() &&

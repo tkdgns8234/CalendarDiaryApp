@@ -118,7 +118,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
                     this@MainActivity,
                     selectedDateContents.imageUri.toUri()
                 ) {
-                    btnRegisterDiary.visibility = View.GONE
+                    btnRegisterDiary.visibility = false.toVisibility()
                 }
             }
             is MainState.GetDiaryContents.Fail -> {

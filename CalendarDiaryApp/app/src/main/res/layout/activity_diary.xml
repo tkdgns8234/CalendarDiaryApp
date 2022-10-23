@@ -27,11 +27,11 @@
     <TextView
         android:id="@+id/tv_current_date"
         style="@style/font_bold"
-        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="15dp"
         android:layout_marginTop="8dp"
+        android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         tools:text="2022년 9월 15일 목요일" />
@@ -45,31 +45,37 @@
         android:background="@drawable/shape_outline_radius"
         app:layout_constraintTop_toBottomOf="@id/tv_current_date" />
 
-    <EditText
-        android:id="@+id/et_title"
-        style="@style/font_bold"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_title"
+        style="@style/EditTextWhiteStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginHorizontal="15dp"
-        android:background="@null"
-        android:hint="@string/title"
-        android:textColorHint="@color/white"
-        android:textColor="@color/white"
-        android:inputType="text"
-        android:maxLines="1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/outline"
-        tools:text="귀여운 진주" />
+        app:layout_constraintTop_toBottomOf="@id/outline">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_title"
+            style="@style/font_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:hint="@string/title"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingStart="5dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white" />
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <View
         android:id="@+id/outline2"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_marginHorizontal="15dp"
-        android:layout_marginTop="7dp"
         android:background="@drawable/shape_outline_radius"
-        app:layout_constraintTop_toBottomOf="@id/et_title" />
+        app:layout_constraintTop_toBottomOf="@id/layout_title" />
 
     <ImageView
         android:id="@+id/iv_diary_image"
@@ -85,42 +91,52 @@
         android:id="@+id/iv_gallery_icon"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        app:tint="@color/white"
         android:src="@drawable/ic_baseline_gallery_24"
         app:layout_constraintBottom_toBottomOf="@id/iv_diary_image"
         app:layout_constraintEnd_toEndOf="@id/iv_diary_image"
         app:layout_constraintStart_toStartOf="@id/iv_diary_image"
         app:layout_constraintTop_toTopOf="@id/iv_diary_image"
-        app:layout_constraintVertical_bias="0.4" />
+        app:layout_constraintVertical_bias="0.4"
+        app:tint="@color/white" />
 
     <TextView
         android:id="@+id/tv_gallery"
         style="@style/font_bold"
-        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
         android:text="@string/select_photo"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_gallery_icon" />
 
-    <EditText
-        android:id="@+id/et_content"
-        style="@style/font_bold"
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_content"
+        style="@style/EditTextWhiteStyle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="15dp"
-        android:background="@null"
-        android:ellipsize="start"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        android:gravity="start|top"
-        android:hint="@string/content"
-        android:scrollbars="vertical"
-        android:inputType="textMultiLine"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginVertical="5dp"
         app:layout_constraintBottom_toTopOf="@id/btn_save"
-        app:layout_constraintTop_toBottomOf="@id/iv_diary_image" />
+        app:layout_constraintTop_toBottomOf="@id/iv_diary_image">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_content"
+            style="@style/font_bold"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="5dp"
+            android:ellipsize="end"
+            android:gravity="start|top"
+            android:hint="@string/content"
+            android:inputType="textMultiLine"
+            android:scrollbars="vertical"
+            android:scrollbarThumbVertical="@color/white"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_save"
@@ -139,8 +155,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        android:indeterminateTintMode="src_atop"
         android:indeterminateTint="@color/blue_primary"
+        android:indeterminateTintMode="src_atop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
