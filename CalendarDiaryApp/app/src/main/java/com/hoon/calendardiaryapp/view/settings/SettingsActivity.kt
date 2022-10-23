@@ -49,6 +49,7 @@ class SettingsActivity : BaseActivity<BaseViewModel, ActivitySettingsBinding>(
 
     override fun onResume() {
         super.onResume()
+
         val locale = LocaleHelper.getPersistedLocale(this)
 
         when (locale) {
@@ -67,9 +68,7 @@ class SettingsActivity : BaseActivity<BaseViewModel, ActivitySettingsBinding>(
 
         if (language != currentLocale) {
 
-            LocaleHelper.setLocale(this@SettingsActivity, language) {
-                PreferenceManager(this).putCurrentLanguage(it)
-            }
+            LocaleHelper.setLocale(this@SettingsActivity, language)
             recreate() // 언어 변경 즉시 적용
         }
     }

@@ -20,7 +20,7 @@ object LocaleHelper {
 
     fun onAttach(context: Context): Context {
         val locale = getPersistedLocale(context)
-        return setLocale(context, locale, null)
+        return setLocale(context, locale)
     }
 
     fun getPersistedLocale(context: Context): String {
@@ -30,7 +30,7 @@ object LocaleHelper {
     /**
      * Set the app's locale to the one specified by the given String.
      */
-    fun setLocale(context: Context, localeSpec: String?, action: ((language: String) -> Unit)?): Context {
+    fun setLocale(context: Context, localeSpec: String?): Context {
         var locale: Locale = if (localeSpec == LANGUAGE_SYSTEM) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 Resources.getSystem().configuration.locales[0]
@@ -46,9 +46,7 @@ object LocaleHelper {
             locale = Locale(LANGUAGE_ENGLISH)
         }
 
-        action?.let {
-            it(locale.language)
-        }
+        PreferenceManager(context).putCurrentLanguage(locale.language)
 
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             updateResources(context, locale)
