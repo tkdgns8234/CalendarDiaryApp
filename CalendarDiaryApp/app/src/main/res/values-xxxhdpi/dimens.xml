@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="date_height">45dp</dimen>
+    <dimen name="main_year_text_size">18sp</dimen>
+    <dimen name="main_month_text_size">35sp</dimen>
+</resources>
