@@ -3,17 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="45dp"
-    android:background="@color/black"
-    android:layout_height="45dp">
+    android:layout_height="45dp"
+    android:background="@color/black">
 
     <ImageView
         android:id="@+id/iv_selected_effect"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/shape_circle"
-        app:tint="@color/calender_background_gray"
         android:alpha="0"
-        />
+        android:src="@drawable/shape_circle"
+        app:tint="@color/calender_background_gray" />
 
     <TextView
         android:id="@+id/tv_day"
@@ -34,12 +33,11 @@
         android:layout_width="6dp"
         android:layout_height="6dp"
         android:src="@drawable/shape_circle"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_day"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:tint="@color/white"
-        android:visibility="invisible"
-        />
+        app:tint="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

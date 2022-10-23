@@ -21,24 +21,24 @@
     <TextView
         android:id="@+id/tv_language"
         style="@style/font_bold"
-        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="20dp"
         android:text="@string/language"
+        android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <TextView
-        android:textColor="@color/white"
         android:id="@+id/tv_language_korean"
         style="@style/font_bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
         android:text="@string/korean"
+        android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_language" />
@@ -83,18 +83,18 @@
         app:layout_constraintTop_toTopOf="@id/tv_language_korean">
 
         <RadioButton
-            android:buttonTint="@color/blue_light"
             android:id="@+id/radio_btn_korean"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp" />
+            android:layout_marginEnd="5dp"
+            android:buttonTint="@color/blue_light" />
 
         <RadioButton
-            android:buttonTint="@color/blue_light"
             android:id="@+id/radio_btn_english"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp" />
+            android:layout_marginEnd="5dp"
+            android:buttonTint="@color/blue_light" />
     </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

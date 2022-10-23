@@ -30,7 +30,6 @@
         <item name="colorPrimary">@color/white</item>
         <item name="boxStrokeColor">@color/white</item>
         <item name="android:textColorHint">@color/white</item>
-        <item name="hintTextColor">@color/white</item>
     </style>
 
 </resources>
