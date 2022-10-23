@@ -30,12 +30,9 @@ class CalenderAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ItemCalenderBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
-        )
-
-        val params = view.root.layoutParams
-        params.height = itemWidth
-        params.width = itemWidth
-        view.root.layoutParams = params
+        ).apply {
+            root.layoutParams.width = itemWidth
+        }
 
         return ViewHolder(view)
     }

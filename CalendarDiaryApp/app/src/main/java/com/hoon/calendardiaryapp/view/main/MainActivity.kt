@@ -40,8 +40,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
     override fun initViews() = with(binding) {
         setSupportActionBar(toolbar)
 
-        val itemWidth = (getDeviceWidth() * 0.8 / 7).toInt()
-        adapter = CalenderAdapter(itemWidth, onDateClickListener, updateUIListener)
+        adapter = CalenderAdapter(getViewHolderItemWidth(), onDateClickListener, updateUIListener)
         rvCalender.layoutManager =
             GridLayoutManager(this@MainActivity, CalendarManager.DAYS_OF_WEEK)
         rvCalender.adapter = adapter
@@ -229,6 +228,11 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
                 DiaryViewActivity.newIntent(this@MainActivity, date)
             startActivity(intent)
         }
+    }
+
+    private fun getViewHolderItemWidth(): Int {
+        val widthPercent = resources.getString(R.string.device_width_percent).toDouble()
+        return (getDeviceWidth() * widthPercent / CalendarManager.DAYS_OF_WEEK).toInt()
     }
 
     private fun getDeviceWidth(): Int {
