@@ -13,7 +13,7 @@
 
 - 캘린더를 기반으로 사진과 함께 나의 일상생활을 기록할 수 있는 앱
 
-# ⭐️ 고려했던 점
+# 🤔 Learned
 
 - MVVM 패턴 기반 설계 (AAC에서 권장하는 패턴 중 Usecase 패턴 미사용)
   - [데이팅 앱](https://github.com/tkdgns8234/DatingApp)에서 usecase 패턴을 사용했으나, 비즈니스로직을 usecase로 추가로 분리해야하는 비용이 적지 않다고 생각되어 usecase를 제외한 MVVM으로 구현
